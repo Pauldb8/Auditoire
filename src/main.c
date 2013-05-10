@@ -2,7 +2,7 @@
  ============================================================================
  Name        : Auditoire.c
  Author      : Paul, Célien And Steeves
- Version     :
+ Version     : 0.1
  Copyright   : Do not reproduce without the authors' authorization.
  Description : Hello World in C, Ansi-style
  ============================================================================
