@@ -13,6 +13,8 @@
 #include "structures.h"
 
 int main(void) {
-	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
+	setvbuf(stdout, NULL, _IONBF, 0); //Pour Eclipse
+    T_AnneeSection * tabAnneeSection; // Ecole (tabAnnneeSection)
+    afficherMenuGlobal(tabAnneeSection);
 	return EXIT_SUCCESS;
 }
