@@ -52,6 +52,7 @@ typedef struct{
 
 //Structure qui contiendra les différents années section possibles
 typedef struct{
+	char *nom;
 	int nbrAnnees;
 	T_Annee *tabAnnees;
 }T_Section;

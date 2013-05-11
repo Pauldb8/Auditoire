@@ -1,7 +1,6 @@
 #include "structures.h"
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_CHAR 51
 
 /*Permet de créer 1 anneeSection */
 T_Annee demanderInfo(T_Annee anneeSection)

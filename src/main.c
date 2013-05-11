@@ -12,11 +12,13 @@
 #include <stdlib.h>
 #include "structures.h"
 #include "operationsChoix.h"
+#include "chargementSection.h"
 #include "tools.h"
-#define URL_SECTIONS "src/Sauvegardes" //Où chercher les dossiers de Sections
+#include "defines.h"
 
 int main(void) {
-	int choix;
+	int choix, nbrAnnee;
+	T_Section sectionChargee;
 	setvbuf(stdout, NULL, _IONBF, 0); //Pour Eclipse
 	effacerEcran();//Efface l'écran et affiche le titre du programme
 	printf("Que voulez-vous faire ?\n");
@@ -25,9 +27,10 @@ int main(void) {
 	printf("\n\nVotre choix : ");
 	choix = getNumber(1,2);
 	if(choix == 1)
-		choisirSectionACharger(URL_SECTIONS);
+		sectionChargee = (T_Section) choisirSectionACharger(URL_SECTIONS);
 	//todo: add else
-	T_Annee * tabAnnee; // Ecole (tabAnnneeSection)
-    afficherMenuGlobal(tabAnnee);
+	printf("Fin correcte du programme");
+	//T_Annee * tabAnnee; // Ecole (tabAnnneeSection)
+    //afficherMenuGlobal(tabAnnee);
 	return EXIT_SUCCESS;
 }

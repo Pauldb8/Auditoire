@@ -9,7 +9,7 @@
 #define OPERATIONSCHOIX_H_
 
 void creerEtudiant(T_Classe *);
-void afficherMenuGlobal(T_Annee *);
+void administrationAnnees(T_Annee *);
 void afficherMenuChoixSection(T_Annee *, int);
 void afficherMenuChoixClasse(T_Annee);
 

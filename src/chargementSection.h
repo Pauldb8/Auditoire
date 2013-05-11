@@ -8,6 +8,6 @@
 #ifndef CHARGEMENTSECTION_H_
 #define CHARGEMENTSECTION_H_
 
-void choisirSectionACharger(char*);
+T_Section choisirSectionACharger(char*);
 
 #endif /* CHARGEMENTSECTION_H_ */

@@ -7,9 +7,10 @@
 
 #ifndef SAUVEGARDEFICHIER_H_
 #define SAUVEGARDEFICHIER_H_
+#include "structures.h"
 
-void sauverFichierParametrage(T_Annee *, int);
-void chargerFichierParametrage(T_Annee *);
+void sauverFichierParametrage(T_Annee*, int);
+int chargerFichierParametrage(char*, T_Annee*);
 int recupererNombreAnnneeSection();
 
 #endif /* SAUVEGARDEFICHIER_H_ */

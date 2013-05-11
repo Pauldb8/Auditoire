@@ -12,9 +12,7 @@
 #include "fichierParametrage.h"
 #include "sauvegardeFichier.h"
 
-#define INCREMENTALLOC 3
-
-void afficherMenuGlobal(T_Annee * tab)
+void administrationAnnees(T_Annee * tab)
 {
 
     int choix = 0, nbrAnneeSection = 0, i = 0;
@@ -52,7 +50,7 @@ void afficherMenuGlobal(T_Annee * tab)
         else if(choixSauver == 'n' || choixSauver == 'N')
         {
             system("cls");
-            afficherMenuGlobal(tab);
+            administrationAnnees(tab);
         }
 
         for(i = 0; i < nbrAnneeSection ; i++)
@@ -67,7 +65,7 @@ void afficherMenuGlobal(T_Annee * tab)
     {
         int nbr = recupererNombreAnnneeSection();
         tab = malloc(nbrAnneeSection * sizeof(T_Annee));
-        chargerFichierParametrage(tab);
+       // chargerFichierParametrage(tab);
         printf("Chargement effecue\n\n");
         system("Pause");
         system("cls");
