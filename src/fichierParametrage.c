@@ -1,17 +1,10 @@
-/*
- * fichierParametrage.c
- *
- *  Created on: 10 mai 2013
- *      Author: Pauldb
- */
-
 #include "structures.h"
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_CHAR 51
 
 /*Permet de créer 1 anneeSection */
-T_AnneeSection demanderInfo(T_AnneeSection anneeSection)
+T_Annee demanderInfo(T_Annee anneeSection)
 {
     system("cls");
     printf("**** Creation d'annee/section **** \n\n");
@@ -74,4 +67,3 @@ T_AnneeSection demanderInfo(T_AnneeSection anneeSection)
         free(anneeSection.nomClasse[i]);
 
 }
-

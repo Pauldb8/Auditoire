@@ -1,7 +1,7 @@
 /*
- * operationsSurEtudiants.c
+ * operationsChoix.c
  *
- *  Created on: 10 mai 2013
+ *  Created on: 11 mai 2013
  *      Author: Pauldb
  */
 
@@ -9,13 +9,12 @@
 #include <stdlib.h>
 
 #include "structures.h"
-#include "operationsSurEtudiants.h"
 #include "fichierParametrage.h"
 #include "sauvegardeFichier.h"
 
 #define INCREMENTALLOC 3
 
-void afficherMenuGlobal(T_AnneeSection * tab)
+void afficherMenuGlobal(T_Annee * tab)
 {
 
     int choix = 0, nbrAnneeSection = 0, i = 0;
@@ -32,7 +31,7 @@ void afficherMenuGlobal(T_AnneeSection * tab)
     {
         printf("Nombre d'annee/section souhaitee : ");
         scanf("%d", &nbrAnneeSection);
-        tab = malloc(nbrAnneeSection * sizeof(T_AnneeSection));
+        tab = malloc(nbrAnneeSection * sizeof(T_Annee));
         if(tab == NULL)
         {
             printf("Erreur memoire");
@@ -66,16 +65,47 @@ void afficherMenuGlobal(T_AnneeSection * tab)
 
     else if(choix == 1)
     {
-        tab = malloc(nbrAnneeSection * sizeof(T_AnneeSection));
+        int nbr = recupererNombreAnnneeSection();
+        tab = malloc(nbrAnneeSection * sizeof(T_Annee));
         chargerFichierParametrage(tab);
-        printf("%s", tab[0].nomAnneeSection);
+        printf("Chargement effecue\n\n");
+        system("Pause");
+        system("cls");
+        afficherMenuChoixSection(tab, nbr);
     }
 
-    /*Perte de toute les donées si free. Le faire ici ?*/
-    // TODO : Voir le free.
-    free(tab);
+}
+
+void afficherMenuChoixSection(T_Annee * tab, int nbr)
+{
+    int i, choix;
+    printf("Sur quel annee/section voulez vous travailler ?\n\n");
+    for(i = 0 ; i < nbr ; i++)
+        printf("\t%d. %s\n", i+1, tab[i].nomAnneeSection);
+
+    printf("\nVotre choix : ");
+    scanf("%d", &choix);
+
+    /*tab[choix - 1] car on propose 1 et 2 à la place de 0 et 1, étant les positions réelles dans le tableau*/
+    afficherMenuChoixClasse(tab[choix - 1]);
+}
+
+void afficherMenuChoixClasse(T_Annee a)
+{
+    system("cls");
+    int i, choix = 0;
+
+    printf("Sur quelle classe de la section %s voulez vous travailler ?\n\n", a.nomAnneeSection);
+    for(i = 0 ; i < a.nbClasses ; i++)
+        printf("\t%d. %s\n", i+1, a.nomClasse[i]);
+
+    printf("\nVotre choix : ");
+    scanf("%d", &choix);
+
 
 }
+
+
 
 void creerEtudiant(T_Classe * classe)
 {
@@ -91,3 +121,6 @@ void creerEtudiant(T_Classe * classe)
     gets(etu.prenom);
 
 }
+
+
+

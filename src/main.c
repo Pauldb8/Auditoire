@@ -11,10 +11,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "structures.h"
+#include "operationsChoix.h"
 
 int main(void) {
 	setvbuf(stdout, NULL, _IONBF, 0); //Pour Eclipse
-    T_AnneeSection * tabAnneeSection; // Ecole (tabAnnneeSection)
-    afficherMenuGlobal(tabAnneeSection);
+	T_Annee * tabAnnee; // Ecole (tabAnnneeSection)
+    afficherMenuGlobal(tabAnnee);
 	return EXIT_SUCCESS;
 }

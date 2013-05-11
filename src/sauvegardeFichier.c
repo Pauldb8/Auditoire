@@ -7,17 +7,43 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h> //traitement des erreurs pour fopen
+
+extern int errno ;
 
 #include "structures.h"
 
 #define DEBUG 1
 #define TAILLE_MAX 51
 #define INCREMENTALLOC 3
-#define FICHIER_PARAMETRAGE "Sauvegardes/fichierParametrage.txt"
+#define URI_FICHIERS "src/Sauvegardes/"
+#define FICHIER_TI "fichierParametrage"
+#define EXT ".txt"
+#define FICHIER_PARAMETRAGE URI_FICHIERS FICHIER_TI EXT
 
+int recupererNombreAnnneeSection()
+{
+    FILE *f = NULL;
+    char s[TAILLE_MAX];
+
+    f = fopen(FICHIER_PARAMETRAGE, "rt");
+    if(f == NULL)
+    {
+        printf("Erreur lors de l'ouverture de %s\n", FICHIER_PARAMETRAGE);
+		perror ("The following error occurred");
+		printf( "Value of errno: %d\n", errno );
+		exit(0);
+    }
+
+    /*On récupère le nombre d'annee/Section*/
+    fgets(s, TAILLE_MAX, f);
+    int nbr = atoi(s);
+
+    return nbr;
+}
 
 /*Permet d'enregistrer TOUT le fichier de parametrage*/
-void sauverFichierParametrage(T_AnneeSection * tab, int nbr)
+void sauverFichierParametrage(T_Annee * tab, int nbr)
 {
     FILE *f = NULL;
     int i = 0, j = 0, k = 0;
@@ -27,7 +53,9 @@ void sauverFichierParametrage(T_AnneeSection * tab, int nbr)
     if(f == NULL)
     {
         printf("Erreur lors de l'ouverture de %s\n", FICHIER_PARAMETRAGE);
-        exit(0);
+		perror ("The following error occurred");
+		printf( "Value of errno: %d\n", errno );
+		exit(0);
     }
 
     fprintf(f, "%d;\n", nbr); // Ecriture du nombre total d'années/sections.
@@ -56,7 +84,7 @@ void sauverFichierParametrage(T_AnneeSection * tab, int nbr)
 
 /*Permet de charger TOUT le fichier de parametrage*/
 /*tab contiendra les informations relatives à toutes les années/sections*/
-void chargerFichierParametrage(T_AnneeSection * tab)
+void chargerFichierParametrage(T_Annee * tab)
 {
     int i = 0, j = 0, k, l, m;
 
@@ -85,29 +113,38 @@ void chargerFichierParametrage(T_AnneeSection * tab)
     while(fgets(s, TAILLE_MAX, f) != NULL) // Tant que l'on parvient à écrire dans le fichier
    {
       strcpy(tab[j].nomAnneeSection, strtok(s,";")); if(DEBUG) printf("Nom Annee/section : %s\n", tab[j].nomAnneeSection);
-      tab[i].nbClasses = atoi(strtok(NULL, ";")); if(DEBUG) printf("Nombre de classes : %d\n", tab[i].nbClasses);
+      tab[j].nbClasses = atoi(strtok(NULL, ";")); if(DEBUG) printf("Nombre de classes : %d\n", tab[j].nbClasses);
 
-      tab[i].nomClasse = (char **) malloc(tab[i].nbClasses * sizeof(char*));
+      tab[j].nomClasse = (char **) malloc(tab[j].nbClasses * sizeof(char*));
+      if(tab[j].nomClasse == NULL)
+        exit(0);
 
-      for(l = 0 ; l < tab[i].nbClasses ; l++)
-        tab[i].nomClasse[l] = (char *) malloc(TAILLE_MAX * sizeof(char));
-
-     for(k = 0 ; k < tab[i].nbClasses ; k++)
+      for(l = 0 ; l < tab[j].nbClasses ; l++)
       {
-          strcpy(tab[i].nomClasse[k], strtok(NULL,";")); if (DEBUG) printf("Classe : %s\n", tab[i].nomClasse[k]);
+          tab[j].nomClasse[l] = (char *) malloc(TAILLE_MAX * sizeof(char));
+          if(tab[j].nomClasse[l] == 0)
+            exit(0);
       }
 
-      tab[i].nbCoursParEtudiant = atoi(strtok(NULL, ";")); if(DEBUG) printf("Nombre de Cours : %d\n", tab[i].nbCoursParEtudiant);
-      tab[i].tabCours = malloc(tab[i].nbCoursParEtudiant * sizeof(T_Cours));
 
-      for(m = 0 ; m < tab[i].nbCoursParEtudiant ; m++)
+      for(k = 0 ; k < tab[j].nbClasses ; k++)
       {
-        strcpy(tab[i].tabCours[m].nomCours, strtok(NULL, ";"));
-        tab[i].tabCours[m].ponderation = atoi(strtok(NULL, ";"));
+          strcpy(tab[j].nomClasse[k], strtok(NULL,";")); if (DEBUG) printf("Classe %d : %s\n", k,  tab[j].nomClasse[k]);
+      }
+
+      tab[j].nbCoursParEtudiant = atoi(strtok(NULL, ";")); if(DEBUG) printf("Nombre de Cours : %d\n", tab[j].nbCoursParEtudiant);
+      tab[j].tabCours = malloc(tab[j].nbCoursParEtudiant * sizeof(T_Cours));
+      if(tab[j].tabCours == 0)
+        exit(0);
+
+      for(m = 0 ; m < tab[j].nbCoursParEtudiant ; m++)
+      {
+        strcpy(tab[j].tabCours[m].nomCours, strtok(NULL, ";"));
+        tab[j].tabCours[m].ponderation = atoi(strtok(NULL, ";"));
         if(DEBUG)
         {
-            printf("Cours %d : %s\n", m, tab[i].tabCours[m].nomCours);
-            printf("Ponderation %d : %d\n", m, tab[i].tabCours[m].ponderation);
+            printf("Cours %d : %s\n", m, tab[j].tabCours[m].nomCours);
+            printf("Ponderation %d : %d\n", m, tab[j].tabCours[m].ponderation);
         }
 
       }
@@ -117,4 +154,3 @@ void chargerFichierParametrage(T_AnneeSection * tab)
       j++;
    }
 }
-

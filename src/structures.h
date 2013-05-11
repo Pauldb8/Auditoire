@@ -47,7 +47,13 @@ typedef struct{
     int nbCoursParEtudiant;
     T_Cours *tabCours;
     T_Classe *tabClasse; // Tableau de classe, exemple : 1TM1 (on ne sauvegardes pas ce champ)
-}T_AnneeSection;
+}T_Annee;
 
+
+//Structure qui contiendra les différents années section possibles
+typedef struct{
+	int nbrAnnees;
+	T_Annee *tabAnnees;
+}T_Section;
 
 #endif /* STRUCTURES_H_ */

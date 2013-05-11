@@ -8,7 +8,8 @@
 #ifndef SAUVEGARDEFICHIER_H_
 #define SAUVEGARDEFICHIER_H_
 
-void sauverFichierParametrage(T_AnneeSection *, int);
-void chargerFichierParametrage(T_AnneeSection *);
+void sauverFichierParametrage(T_Annee *, int);
+void chargerFichierParametrage(T_Annee *);
+int recupererNombreAnnneeSection();
 
 #endif /* SAUVEGARDEFICHIER_H_ */
