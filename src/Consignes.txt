@@ -1,0 +1,51 @@
+Consignes : 
+
+/*Ce qui est déjà fait (en statique)*/
+I. 1 Classe (max 25 etudiants, 5 cours)
+	- Ajouter un Etudiant. DONE
+	- Modifier un Etudiant. DONE
+	- Supprimer un Etudiant. DONE
+	- Encoder une cote. DONE
+	- Modifier une cote (pour un étudiant). DONE
+	- Calculer le pourcentage par étudiant. DONE
+	- Trier les étudiants en fonction de pourcentage. DONE
+	- Afficher le classement (en fonction du pourcentage) + nombre d'echecs DONE
+	
+II. Fichiers
+	- Fichier texte avec résultats pour délibé qui contient :  DONE
+		- Etudiant triés en fonction du pourcentage de réussite. DONE
+		- Matricule, nom, prénom, pourcentage et nbr d'echecs. DONE
+		
+	- Fichier binaire pour pouvoir sauver une classe dans l'etat ou elle est. DONE
+	
+/*Passage en allocation dynamique*/
+	- Passer en malloc. 
+	- 1 classe doit être représentée par : Un pointeur vers une structure a 2 champs :
+		a. Nombre étudiants
+		b. Pointeur (vers le nombre d'étudiants)
+		
+/*Passer en plusieurs classes*/
+	- Décomposition en année section (ex : 1ère TI)
+	- Pour gérer un année section : 
+		- Un fichier texte de "paramétrage" (1 par année/section, ex : 1 pour 1ère TI, créer une seule et unique fois pour une année/section)
+		- Il contient : 
+			a. Nombre de classes. 
+			b. Tableau contenant le nom des classes. 
+			c. Nombre de cours par étudiant 
+			d. Tableau de cours (identifiant du cours + pondération du cours). EN TENIR COMPTE AVEC LA PONDERATION DES COURS. 
+	
+
+/*Rapport*/
+	- Ennoncé
+	- Plan application
+	- Explication du plans
+	- Difficultés rencontrés
+	- Etc ... (même critère premier quadri)
+	
+/*Deroulement*/
+- De quels section voulez vous vous occuper ? 
+- 1T
+- Charger le fichier de paramétrage. 
+- Si pas là, caca. 
+- Une fois chargé, on créer l'année/section en fonction du truc de paramétrage. 
+	
