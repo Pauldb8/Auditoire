@@ -1,3 +1,4 @@
-2;
-1TI;2;1TM1;1TM2;2;Math;6;Philo;4;
-2T2;2;2TM1;2TM2;3;Math;4;LP;8;Pheno;5;
+3;
+1C;2;1C1;1C2;2;Compta;6;Economie;4;
+2C;2;2C1;2C2;3;Droit;4;Philo;8;Math;5;
+3C;2;1C1;1C2;2;Compta;6;Economie;4;

@@ -1,3 +1,2 @@
-2;
-1TI;2;1TM1;1TM2;2;Math;6;Philo;4;
-2T2;2;2TM1;2TM2;3;Math;4;LP;8;Pheno;5;
+1;
+1M;2;1M1;1M2;2;Marketing;6;Philo;4;
