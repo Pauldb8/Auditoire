@@ -8,18 +8,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h> //traitement des erreurs pour fopen
+#include <string.h>
 
 extern int errno ;
 
 #include "structures.h"
-
-#define DEBUG 1
-#define TAILLE_MAX 51
-#define INCREMENTALLOC 3
-#define URI_FICHIERS "src/Sauvegardes/"
-#define FICHIER_TI "fichierParametrage"
-#define EXT ".txt"
-#define FICHIER_PARAMETRAGE URI_FICHIERS FICHIER_TI EXT
+#include "defines.h"
 
 int recupererNombreAnnneeSection()
 {
@@ -84,17 +78,32 @@ void sauverFichierParametrage(T_Annee * tab, int nbr)
 
 /*Permet de charger TOUT le fichier de parametrage*/
 /*tab contiendra les informations relatives à toutes les années/sections*/
-void chargerFichierParametrage(T_Annee * tab)
+
+/*
+ * @chargerFichierParametrage(char*, T_Annee*): Cette fonction lit un fichier de section
+ * et remplit la structure T_Annee, reçue en paramètre, selon les informations
+ * du fichier. Le fichier à lire est reçu en paramètre, et est considéré comme
+ * étant VALIDE.
+ * @param: L'adressse du fichier à charger.
+ * @param: un pointeur vers une strucutre T_Annee à remplir avec les infos du fichier.
+ * @return: Elle retourne le nombre d'année de la section que contenait le fichier.
+ */
+int chargerFichierParametrage(char* fichier, T_Annee * tab)
 {
     int i = 0, j = 0, k, l, m;
 
     FILE *f = NULL;
     char s[TAILLE_MAX];
+    char urlComplet[TAILLE_MAX] = strcat((char*)URI_FICHIERS, fichier);
 
-    f = fopen(FICHIER_PARAMETRAGE, "rt");
+    if(DEBUG){
+    	printf("urlComplet = %s", urlComplet);
+    }
+
+    f = fopen(urlComplet, "rt");
     if(f == NULL)
     {
-        printf("Erreur lors de l'ouverture de %s", FICHIER_PARAMETRAGE);
+        printf("Erreur lors de l'ouverture de %s", urlComplet);
         exit(0);
     }
 
@@ -153,4 +162,5 @@ void chargerFichierParametrage(T_Annee * tab)
 
       j++;
    }
+    return nbrAnneeSection;
 }
