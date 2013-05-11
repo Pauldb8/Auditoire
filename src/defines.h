@@ -21,5 +21,4 @@
 #define EXT ".txt"
 #define FICHIER_PARAMETRAGE URI_FICHIERS FICHIER_TI EXT
 
-
 #endif /* DEFINES_H_ */
