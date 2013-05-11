@@ -94,7 +94,9 @@ int chargerFichierParametrage(char* fichier, T_Annee * tab)
 
     FILE *f = NULL;
     char s[TAILLE_MAX];
-    char urlComplet[TAILLE_MAX] = strcat((char*)URI_FICHIERS, fichier);
+    char *url1 = URI_FICHIERS;
+    char urlComplet[MAX_CHAR];
+    sprintf(urlComplet,"%s%s",url1,fichier); //Concaténation URLDOSSIER+URLFICHIER
 
     if(DEBUG){
     	printf("urlComplet = %s", urlComplet);
