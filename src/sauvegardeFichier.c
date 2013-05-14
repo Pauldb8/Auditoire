@@ -15,26 +15,6 @@ extern int errno ;
 #include "structures.h"
 #include "defines.h"
 
-int recupererNombreAnnneeSection()
-{
-    FILE *f = NULL;
-    char s[TAILLE_MAX];
-
-    f = fopen(FICHIER_PARAMETRAGE, "rt");
-    if(f == NULL)
-    {
-        printf("Erreur lors de l'ouverture de %s\n", FICHIER_PARAMETRAGE);
-		perror ("The following error occurred");
-		printf( "Value of errno: %d\n", errno );
-		exit(0);
-    }
-
-    /*On récupère le nombre d'annee/Section*/
-    fgets(s, TAILLE_MAX, f);
-    int nbr = atoi(s);
-
-    return nbr;
-}
 
 /*Permet d'enregistrer TOUT le fichier de parametrage*/
 void sauverFichierParametrage(T_Section section)

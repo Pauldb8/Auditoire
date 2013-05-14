@@ -11,7 +11,6 @@
 
 void sauverFichierParametrage(T_Section);
 int chargerFichierParametrage(char*, T_Annee*);
-int recupererNombreAnnneeSection();
 
 #endif /* SAUVEGARDEFICHIER_H_ */
 

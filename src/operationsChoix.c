@@ -12,11 +12,30 @@
 #include "structures.h"
 #include "fichierParametrage.h"
 #include "sauvegardeFichier.h"
+#include "operationsEtudiants.h"
+#include "tools.h"
+
+
+void afficherMenuChoixAnnee(T_Section * tab)
+{
+    int i, choix;
+
+    printf("Veuillez choisir une annee a gerer : \n\n");
+
+    for(i = 0 ; i < tab->nbrAnnees ; i++)
+        printf("\t%d. %s\n", i+1, tab->tabAnnees[i].nomAnneeSection);
+
+    printf("\nVotre choix : ");
+    scanf("%d", &choix);
+
+    /*tab[choix - 1] car on propose 1 et 2 à la place de 0 et 1, étant les positions réelles dans le tableau*/
+    afficherMenuChoixClasse(*tab, choix-1);
+}
 
 void administrationAnnees(T_Section * tab)
 {
 
-    int choix = 0, nbrAnneeACreer = 0, i = 0, j;
+    int choix = 0, nbrAnneeACreer = 0, i = 0;
     char choixSauver = 0;
 
     printf("*** Programme de gestion de classes *** \n\n");
@@ -74,8 +93,8 @@ void administrationAnnees(T_Section * tab)
             }
             else if(choixSauver == 'n' || choixSauver == 'N')
             {
-                system("cls");
-                administrationAnnees(tab->tabAnnees);
+                effacerEcran();
+                //administrationAnnees(tab->tabAnnees);
             }
 
 
@@ -123,26 +142,5 @@ void afficherMenuChoixClasse(T_Section sct, int choix)
 
     printf("\nVotre choix : ");
     scanf("%d", &choixAnnee);
-
-
+    administrationClasse(&sct.tabAnnees[choix].tabClasse[choixAnnee-1], sct.nom);
 }
-
-
-
-void creerEtudiant(T_Classe * classe)
-{
-    printf("*** Creation d'étudiant dans une Classe *** \n\n");
-
-    T_Etudiant etu;
-
-    printf("Nom : ");
-    fflush(stdin);
-    gets(etu.nom);
-    printf("Prenom : ");
-    fflush(stdin);
-    gets(etu.prenom);
-
-}
-
-
-
