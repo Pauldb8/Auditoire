@@ -12,12 +12,11 @@
 #include "structures.h"
 #include "fichierParametrage.h"
 #include "sauvegardeFichier.h"
-#include "operationsChoix.h"
 
 void administrationAnnees(T_Section * tab)
 {
 
-    int choix = 0, nbrAnneeACreer = 0, i = 0;
+    int choix = 0, nbrAnneeACreer = 0, i = 0, j;
     char choixSauver = 0;
 
     printf("*** Programme de gestion de classes *** \n\n");
@@ -43,7 +42,7 @@ void administrationAnnees(T_Section * tab)
                 tab->tabAnnees[tab->nbrAnnees + i] = demanderInfo(tab->tabAnnees[tab->nbrAnnees + i]);
 
             printf("Les nouvelles classes ont correctement ete ajoutee !\n");
-            //On incrémente le nombre de classes de la section
+            //On incrÃ©mente le nombre de classes de la section
             tab->nbrAnnees += nbrAnneeACreer;
             sauverFichierParametrage(*tab);
             for(i=0; i<nbrAnneeACreer+tab->nbrAnnees; i++)
@@ -90,45 +89,49 @@ void administrationAnnees(T_Section * tab)
         printf("Chargement des classes effectue.\n\n");
         system("Pause");
         effacerEcran();
-        printf("***Veuillez choisir une annee a gerer:\n");
         afficherMenuChoixAnnee(tab);
     }
-
-}
-
-void afficherMenuChoixClasse(T_Section section, int choix)
-{
-    effacerEcran();
-    int i, choix = 0;
-
-    printf("Sur quelle classe de la section %s voulez vous travailler ?\n\n", section.nom);
-    for(i = 0 ; i < section.tabAnnees[choix].nbClasses ; i++)
-        printf("\t%d. %s\n", i+1, section.tabAnnees[choix].nomClasse[i]);
-
-    printf("\nVotre choix : ");
-    scanf("%d", &choix);
-
 
 }
 
 void afficherMenuChoixAnnee(T_Section * tab)
 {
     int i, choix;
+
+    printf("Veuillez choisir une annee a gerer : \n\n");
+
     for(i = 0 ; i < tab->nbrAnnees ; i++)
-    printf("\t%d. %s\n", i+1, tab->tabAnnees[i].nomAnneeSection);
+        printf("\t%d. %s\n", i+1, tab->tabAnnees[i].nomAnneeSection);
 
     printf("\nVotre choix : ");
     scanf("%d", &choix);
 
-    /*tab[choix - 1] car on propose 1 et 2 à la place de 0 et 1, étant les positions réelles dans le tableau*/
+    /*tab[choix - 1] car on propose 1 et 2 Ã  la place de 0 et 1, Ã©tant les positions rÃ©elles dans le tableau*/
     afficherMenuChoixClasse(*tab, choix-1);
+}
+
+void afficherMenuChoixClasse(T_Section sct, int choix)
+{
+    system("cls");
+    int i, choixAnnee;
+
+    effacerEcran();
+
+    printf("Sur quelle classe de la section %s voulez vous travailler ?\n\n", sct.nom);
+    for(i = 0 ; i < sct.tabAnnees[choix].nbClasses ; i++)
+        printf("\t%d. %s\n", i+1, sct.tabAnnees[choix].nomClasse[i]);
+
+    printf("\nVotre choix : ");
+    scanf("%d", &choixAnnee);
+
+
 }
 
 
 
 void creerEtudiant(T_Classe * classe)
 {
-    printf("*** Creation d'étudiant dans une Classe *** \n\n");
+    printf("*** Creation d'Ã©tudiant dans une Classe *** \n\n");
 
     T_Etudiant etu;
 
