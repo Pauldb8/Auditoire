@@ -16,6 +16,22 @@
 #include "tools.h"
 
 
+void afficherMenuChoixClasse(T_Section sct, int choix)
+{
+    system("cls");
+    int i, choixAnnee;
+
+    effacerEcran();
+
+    printf("Sur quelle classe de la section %s voulez vous travailler ?\n\n", sct.nom);
+    for(i = 0 ; i < sct.tabAnnees[choix].nbClasses ; i++)
+        printf("\t%d. %s\n", i+1, sct.tabAnnees[choix].nomClasse[i]);
+
+    printf("\nVotre choix : ");
+    scanf("%d", &choixAnnee);
+    administrationClasse(&sct.tabAnnees[choix].tabClasse[choixAnnee-1], sct.nom);
+}
+
 void afficherMenuChoixAnnee(T_Section * tab)
 {
     int i, choix;
@@ -31,6 +47,7 @@ void afficherMenuChoixAnnee(T_Section * tab)
     /*tab[choix - 1] car on propose 1 et 2 à la place de 0 et 1, étant les positions réelles dans le tableau*/
     afficherMenuChoixClasse(*tab, choix-1);
 }
+
 
 void administrationAnnees(T_Section * tab)
 {
@@ -111,36 +128,4 @@ void administrationAnnees(T_Section * tab)
         afficherMenuChoixAnnee(tab);
     }
 
-}
-
-void afficherMenuChoixAnnee(T_Section * tab)
-{
-    int i, choix;
-
-    printf("Veuillez choisir une annee a gerer : \n\n");
-
-    for(i = 0 ; i < tab->nbrAnnees ; i++)
-        printf("\t%d. %s\n", i+1, tab->tabAnnees[i].nomAnneeSection);
-
-    printf("\nVotre choix : ");
-    scanf("%d", &choix);
-
-    /*tab[choix - 1] car on propose 1 et 2 à la place de 0 et 1, étant les positions réelles dans le tableau*/
-    afficherMenuChoixClasse(*tab, choix-1);
-}
-
-void afficherMenuChoixClasse(T_Section sct, int choix)
-{
-    system("cls");
-    int i, choixAnnee;
-
-    effacerEcran();
-
-    printf("Sur quelle classe de la section %s voulez vous travailler ?\n\n", sct.nom);
-    for(i = 0 ; i < sct.tabAnnees[choix].nbClasses ; i++)
-        printf("\t%d. %s\n", i+1, sct.tabAnnees[choix].nomClasse[i]);
-
-    printf("\nVotre choix : ");
-    scanf("%d", &choixAnnee);
-    administrationClasse(&sct.tabAnnees[choix].tabClasse[choixAnnee-1], sct.nom);
 }

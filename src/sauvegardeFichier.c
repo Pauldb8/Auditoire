@@ -23,7 +23,7 @@ void sauverFichierParametrage(T_Section section)
     char *fichier = section.nom;
     int nbr = section.nbrAnnees;
     T_Annee * tab = section.tabAnnees;
-    char *urlComplet;
+    char *urlComplet = "";
     int i = 0, j = 0, k = 0;
 
     sprintf(urlComplet,"%s%s.txt",URL_SECTIONS,fichier); //Concaténation URLDOSSIER+URLFICHIER
@@ -139,6 +139,11 @@ int chargerFichierParametrage(char* fichier, T_Annee * tab)
             printf("Ponderation %d : %d\n", m, tab[j].tabCours[m].ponderation);
         }
 
+      }
+
+      tab[j].tabClasse = malloc(tab[j].nbClasses * sizeof(T_Classe));
+      for(l = 0; l < tab[j].nbClasses; l++){
+    	  strcpy(tab[j].tabClasse[l].nomClasse, tab[j].nomClasse[l]);
       }
 
       if(DEBUG) printf("\n");
