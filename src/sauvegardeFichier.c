@@ -37,16 +37,24 @@ int recupererNombreAnnneeSection()
 }
 
 /*Permet d'enregistrer TOUT le fichier de parametrage*/
-void sauverFichierParametrage(T_Annee * tab, int nbr)
+void sauverFichierParametrage(T_Section section)
 {
     FILE *f = NULL;
+    char *fichier = section.nom;
+    int nbr = section.nbrAnnees;
+    T_Annee * tab = section.tabAnnees;
+    char *urlComplet;
     int i = 0, j = 0, k = 0;
 
+    sprintf(urlComplet,"%s%s.txt",URL_SECTIONS,fichier); //Concaténation URLDOSSIER+URLFICHIER
 
-    f = fopen(FICHIER_PARAMETRAGE, "w+");
+    if(DEBUG)
+    	printf("\nurlComplet = %s\n", urlComplet);
+
+    f = fopen(urlComplet, "w+");
     if(f == NULL)
     {
-        printf("Erreur lors de l'ouverture de %s\n", FICHIER_PARAMETRAGE);
+        printf("Erreur lors de l'ouverture de %s\n", urlComplet);
 		perror ("The following error occurred");
 		printf( "Value of errno: %d\n", errno );
 		exit(0);
@@ -90,17 +98,18 @@ void sauverFichierParametrage(T_Annee * tab, int nbr)
  */
 int chargerFichierParametrage(char* fichier, T_Annee * tab)
 {
-    int i = 0, j = 0, k, l, m;
+    int j = 0, k, l, m;
 
     FILE *f = NULL;
     char s[TAILLE_MAX];
     char *url1 = URI_FICHIERS;
     char urlComplet[MAX_CHAR];
+
     sprintf(urlComplet,"%s%s",url1,fichier); //Concaténation URLDOSSIER+URLFICHIER
 
-    if(DEBUG){
-    	printf("urlComplet = %s", urlComplet);
-    }
+    if(DEBUG)
+    	printf("\nurlComplet = %s\n", urlComplet);
+
 
     f = fopen(urlComplet, "rt");
     if(f == NULL)
@@ -112,14 +121,6 @@ int chargerFichierParametrage(char* fichier, T_Annee * tab)
     /*On récupère le nombre d'annee/Section*/
     fgets(s, TAILLE_MAX, f);
     int nbrAnneeSection = atoi(s);
-
-
-    /*Mallocage de départ*/
-    tab->tabClasse = malloc (INCREMENTALLOC * sizeof(T_Classe));
-    tab->tabCours = malloc (INCREMENTALLOC * sizeof(T_Cours));
-
-    /*Initialisation*/
-    tab->nbClasses = 0;
 
     while(fgets(s, TAILLE_MAX, f) != NULL) // Tant que l'on parvient à écrire dans le fichier
    {
@@ -166,3 +167,4 @@ int chargerFichierParametrage(char* fichier, T_Annee * tab)
    }
     return nbrAnneeSection;
 }
+

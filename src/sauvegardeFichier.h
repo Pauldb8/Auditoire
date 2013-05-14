@@ -9,8 +9,9 @@
 #define SAUVEGARDEFICHIER_H_
 #include "structures.h"
 
-void sauverFichierParametrage(T_Annee*, int);
+void sauverFichierParametrage(T_Section);
 int chargerFichierParametrage(char*, T_Annee*);
 int recupererNombreAnnneeSection();
 
 #endif /* SAUVEGARDEFICHIER_H_ */
+

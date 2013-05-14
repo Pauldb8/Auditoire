@@ -25,7 +25,7 @@ int getNumber(int min, int max){
  */
 void effacerEcran(){
 	system("CLS");
-	printf("***BIENVENUE AU PROGRAMME D'ADMINISTRATION DE L'EPHEC***\n");
+	printf("*** Programme d'administration d'une ecole ***\n\n");
 }
 
 /*
@@ -35,25 +35,32 @@ void effacerEcran(){
  * Car les fichiers "." et ".." ne sont autre que des dossiers (le courant et le supérieur)
  * @return: elle retourne le nombre exact de fichier (sans "." et "..").
  */
-int nombreDeFichier(char* dossier){
-DIR * rep = opendir(dossier);
-int nbrSection = 0;
+int nombreDeFichier(char* dossier)
+{
+    DIR * rep = opendir(dossier);
+    int nbrSection = 0;
 
-if (rep != NULL)//Dossier correctement ouvert
-	{
+    if (rep != NULL)//Dossier correctement ouvert
+    {
 	struct dirent * ent;
+
 	while ((ent = readdir(rep)) != NULL)//Parcours du dossier
 			nbrSection++;	//On incrément à chaque fichier trouvé.
+
 	closedir(rep); //Fermeture du répertoire.
 	}
-else //Impossible d'ouvrir le dossier : ERREUR.
+
+    else //Impossible d'ouvrir le dossier : ERREUR.
 	{
-	printf("Erreur lors de l'ouverture de %s\n", dossier);
-	perror ("The following error occurred");
-	printf( "Value of errno: %d\n", errno );
-	exit(0);
+        printf("Erreur lors de l'ouverture de %s\n", dossier);
+        perror ("The following error occurred");
+        printf( "Value of errno: %d\n", errno );
+        exit(0);
 	}
-return (nbrSection-2);
-//On fait moins 2 pour passer les deux premières itérations car elles sont toujours
-// "." et ".." autrement dit, le dossier courant et le dossier supérieur.
+
+	/*On fait moins 2 pour passer les deux premières itérations car elles sont toujours*/
+    /*"." et ".." autrement dit, le dossier courant et le dossier supérieur.*/
+    return (nbrSection-2);
+
 }
+

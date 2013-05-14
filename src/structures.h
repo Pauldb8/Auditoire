@@ -1,3 +1,4 @@
+
 /*
  * structures.h
  *
@@ -52,7 +53,7 @@ typedef struct{
 
 //Structure qui contiendra les différents années section possibles
 typedef struct{
-	char *nom;
+	char nom[MAX_CHAR];
 	int nbrAnnees;
 	T_Annee *tabAnnees;
 }T_Section;

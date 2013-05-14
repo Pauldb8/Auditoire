@@ -1,3 +1,4 @@
+
 /*
  * operationsChoix.c
  *
@@ -12,64 +13,85 @@
 #include "fichierParametrage.h"
 #include "sauvegardeFichier.h"
 
-void administrationAnnees(T_Annee * tab)
+void administrationAnnees(T_Section * tab)
 {
 
-    int choix = 0, nbrAnneeSection = 0, i = 0;
+    int choix = 0, nbrAnneeACreer = 0, i = 0, j;
     char choixSauver = 0;
 
     printf("*** Programme de gestion de classes *** \n\n");
-    printf("\t 1. Charger le tableau d'annee/section.\n");
-    printf("\t 2. Creer une annee/section\n\n");
+    printf("\t 1. Charger le tableau d'annee de cette section (ex : 1TI) .\n");
+    printf("\t 2. Creer une annee\n\n");
 
     printf("Votre choix : ");
     scanf("%d", &choix);
 
+
     if(choix == 2)
     {
-        printf("Nombre d'annee/section souhaitee : ");
-        scanf("%d", &nbrAnneeSection);
-        tab = malloc(nbrAnneeSection * sizeof(T_Annee));
-        if(tab == NULL)
+        if(tab->nbrAnnees > 0)
         {
-            printf("Erreur memoire");
-            exit(0);
+            printf("Il y'a deja %d annee dans la section %s\n", tab->nbrAnnees, tab->nom);
+            printf("Combien d'annees souhaitez vous ajouter : ");
+            scanf("%d", &nbrAnneeACreer);
+
+           tab->tabAnnees = realloc(tab->tabAnnees, (tab->nbrAnnees + nbrAnneeACreer) * sizeof(T_Annee));
+           printf("nbrAnneeACreer: %d\n", nbrAnneeACreer);
+
+            for(i = 0 ; i < nbrAnneeACreer ; i++)
+                tab->tabAnnees[tab->nbrAnnees + i] = demanderInfo(tab->tabAnnees[tab->nbrAnnees + i]);
+
+            printf("Les nouvelles classes ont correctement ete ajoutee !\n");
+            //On incrémente le nombre de classes de la section
+            tab->nbrAnnees += nbrAnneeACreer;
+            sauverFichierParametrage(*tab);
+            for(i=0; i<nbrAnneeACreer+tab->nbrAnnees; i++)
+                printf("Nom : %s", tab->tabAnnees[i].nomAnneeSection);
+
         }
 
-        for(i = 0 ; i < nbrAnneeSection ; i++)
-            tab[i] = demanderInfo(tab[i]);
-
-        printf("Voulez vous sauvegader ce fichier de parametrage ? : ");
-        fflush(stdin);
-        scanf("%c", &choixSauver);
-
-        if(choixSauver == 'o' || choixSauver == 'O')
+        else
         {
-            sauverFichierParametrage(tab, nbrAnneeSection);
-        }
-        else if(choixSauver == 'n' || choixSauver == 'N')
-        {
-            system("cls");
-            administrationAnnees(tab);
-        }
+            printf("Nombre d'annee souhaitee : ");
+            scanf("%d", &nbrAnneeACreer);
+            tab->tabAnnees = malloc(nbrAnneeACreer * sizeof(T_Annee));
+            if(tab == NULL)
+            {
+                printf("Erreur memoire");
+                exit(0);
+            }
 
-        for(i = 0; i < nbrAnneeSection ; i++)
-        {
-            free(tab[i].tabCours);
-            free(tab[i].tabCours[i].nomCours);
-        }
+            for(i = 0 ; i < nbrAnneeACreer ; i++)
+                tab->tabAnnees[i] = demanderInfo(tab->tabAnnees[i]);
 
+            printf("Voulez vous sauvegader ce fichier de parametrage ? : ");
+            fflush(stdin);
+            scanf("%c", &choixSauver);
+
+            if(choixSauver == 'o' || choixSauver == 'O')
+            {
+                sauverFichierParametrage(*tab);
+            }
+            else if(choixSauver == 'n' || choixSauver == 'N')
+            {
+                system("cls");
+                administrationAnnees(tab->tabAnnees);
+            }
+
+
+            free(tab->tabAnnees);
+        }
     }
+
 
     else if(choix == 1)
     {
         int nbr = recupererNombreAnnneeSection();
-        tab = malloc(nbrAnneeSection * sizeof(T_Annee));
        // chargerFichierParametrage(tab);
         printf("Chargement effecue\n\n");
         system("Pause");
         system("cls");
-        afficherMenuChoixSection(tab, nbr);
+        //afficherMenuChoixSection(tab, nbr);
     }
 
 }

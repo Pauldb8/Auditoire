@@ -10,13 +10,13 @@
 #define DEFINES_H_
 
 #define MAX_CHAR 51
-#define URL_SECTIONS "src/Sauvegardes" //Où chercher les dossiers de Sections
+#define URL_SECTIONS "src/Sauvegardes/" //Où chercher les dossiers de Sections
 #define INCREMENTALLOC 3
 
 #define DEBUG 1
 #define TAILLE_MAX MAX_CHAR
 #define INCREMENTALLOC 3
-#define URI_FICHIERS "src/Sauvegardes/"
+#define URI_FICHIERS URL_SECTIONS
 #define FICHIER_TI "fichierParametrage"
 #define EXT ".txt"
 #define FICHIER_PARAMETRAGE URI_FICHIERS FICHIER_TI EXT
