@@ -87,27 +87,34 @@ void administrationAnnees(T_Section * tab)
     else if(choix == 1)
     {
         int nbr = recupererNombreAnnneeSection();
-       // chargerFichierParametrage(tab);
-        printf("Chargement effecue\n\n");
+        char *urlFichier;
+        sprintf(urlFichier, "%s.txt", tab->nom);
+        chargerFichierParametrage(urlFichier, tab->tabAnnees);
+        printf("Chargement des classes effectue.\n\n");
         system("Pause");
-        system("cls");
-        //afficherMenuChoixSection(tab, nbr);
+        choisirAnnee(tab->tabAnnees);
     }
 
 }
 
-void afficherMenuChoixSection(T_Annee * tab, int nbr)
+void choisirAnnee(T_Section *section){
+	effacerEcran();
+	printf("***Veuillez choisir une annee a gerer:");
+	afficherMenuChoixAnnee(section);
+
+}
+
+void afficherMenuChoixAnnee(T_Section * tab)
 {
     int i, choix;
-    printf("Sur quel annee/section voulez vous travailler ?\n\n");
-    for(i = 0 ; i < nbr ; i++)
-        printf("\t%d. %s\n", i+1, tab[i].nomAnneeSection);
+    for(i = 0 ; i < tab->nbrAnnees ; i++)
+        printf("\t%d. %s\n", i+1, tab->tabAnnees.nomAnneeSection);
 
     printf("\nVotre choix : ");
     scanf("%d", &choix);
 
     /*tab[choix - 1] car on propose 1 et 2 à la place de 0 et 1, étant les positions réelles dans le tableau*/
-    afficherMenuChoixClasse(tab[choix - 1]);
+    afficherMenuChoixClasse(tab->tabAnnees->tabClasse[choix-1]);
 }
 
 void afficherMenuChoixClasse(T_Annee a)
