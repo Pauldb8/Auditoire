@@ -12,11 +12,12 @@
 #include "structures.h"
 #include "fichierParametrage.h"
 #include "sauvegardeFichier.h"
+#include "operationsChoix.h"
 
 void administrationAnnees(T_Section * tab)
 {
 
-    int choix = 0, nbrAnneeACreer = 0, i = 0, j;
+    int choix = 0, nbrAnneeACreer = 0, i = 0;
     char choixSauver = 0;
 
     printf("*** Programme de gestion de classes *** \n\n");
@@ -86,21 +87,27 @@ void administrationAnnees(T_Section * tab)
 
     else if(choix == 1)
     {
-        int nbr = recupererNombreAnnneeSection();
-        char *urlFichier;
-        sprintf(urlFichier, "%s.txt", tab->nom);
-        chargerFichierParametrage(urlFichier, tab->tabAnnees);
         printf("Chargement des classes effectue.\n\n");
         system("Pause");
-        choisirAnnee(tab->tabAnnees);
+        effacerEcran();
+        printf("***Veuillez choisir une annee a gerer:\n");
+        afficherMenuChoixAnnee(tab);
     }
 
 }
 
-void choisirAnnee(T_Section *section){
-	effacerEcran();
-	printf("***Veuillez choisir une annee a gerer:");
-	afficherMenuChoixAnnee(section);
+void afficherMenuChoixClasse(T_Section section, int choix)
+{
+    effacerEcran();
+    int i, choix = 0;
+
+    printf("Sur quelle classe de la section %s voulez vous travailler ?\n\n", section.nom);
+    for(i = 0 ; i < section.tabAnnees[choix].nbClasses ; i++)
+        printf("\t%d. %s\n", i+1, section.tabAnnees[choix].nomClasse[i]);
+
+    printf("\nVotre choix : ");
+    scanf("%d", &choix);
+
 
 }
 
@@ -108,28 +115,13 @@ void afficherMenuChoixAnnee(T_Section * tab)
 {
     int i, choix;
     for(i = 0 ; i < tab->nbrAnnees ; i++)
-        printf("\t%d. %s\n", i+1, tab->tabAnnees.nomAnneeSection);
+    printf("\t%d. %s\n", i+1, tab->tabAnnees[i].nomAnneeSection);
 
     printf("\nVotre choix : ");
     scanf("%d", &choix);
 
     /*tab[choix - 1] car on propose 1 et 2 à la place de 0 et 1, étant les positions réelles dans le tableau*/
-    afficherMenuChoixClasse(tab->tabAnnees->tabClasse[choix-1]);
-}
-
-void afficherMenuChoixClasse(T_Annee a)
-{
-    system("cls");
-    int i, choix = 0;
-
-    printf("Sur quelle classe de la section %s voulez vous travailler ?\n\n", a.nomAnneeSection);
-    for(i = 0 ; i < a.nbClasses ; i++)
-        printf("\t%d. %s\n", i+1, a.nomClasse[i]);
-
-    printf("\nVotre choix : ");
-    scanf("%d", &choix);
-
-
+    afficherMenuChoixClasse(*tab, choix-1);
 }
 
 

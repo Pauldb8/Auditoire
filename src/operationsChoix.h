@@ -11,8 +11,8 @@
 void creerEtudiant(T_Classe *);
 void administrationAnnees(T_Section *);
 void choisirAnnee(T_Annee *);
-void afficherMenuChoixAnnee(T_Section * tab);
-void afficherMenuChoixClasse(T_Annee);
+void afficherMenuChoixAnnee(T_Section *);
+void afficherMenuChoixClasse(T_Section, int);
 
 #endif /* OPERATIONSCHOIX_H_ */
 
