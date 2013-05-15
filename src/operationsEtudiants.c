@@ -83,6 +83,7 @@ void administrationClasse(T_Classe *classe, char* nomSection){
 			//ajouterEtudiant(classe);
 			break;
 		case 6:
+			printf("%s", classe->nomClasse); system("PAUSE");
 			sauvegarderClasse(*classe, nomSection, classe->nomClasse);
 			break;
 	}
