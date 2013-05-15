@@ -8,7 +8,7 @@ T_Annee demanderInfo(T_Annee anneeSection)
     system("cls");
     printf("**** Creation d'annee/section **** \n\n");
 
-    int i = 0, j = 0, k = 0;
+    int i = 0;
 
         printf("Nom (ex : 1TI) : ");
         fflush(stdin);

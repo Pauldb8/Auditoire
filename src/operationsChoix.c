@@ -29,7 +29,7 @@ void afficherMenuChoixClasse(T_Section sct, int choix)
 
     printf("\nVotre choix : ");
     scanf("%d", &choixAnnee);
-    administrationClasse(&sct.tabAnnees[choix].tabClasse[choixAnnee-1], sct.nom, sct.tabAnnees[choix].nomAnneeSection);
+    administrationClasse(&sct.tabAnnees[choix].tabClasse[choixAnnee-1].nomClasse, sct.nom, sct.tabAnnees[choix].nomAnneeSection);
 }
 
 void afficherMenuChoixAnnee(T_Section * tab)

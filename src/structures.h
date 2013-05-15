@@ -38,7 +38,7 @@ typedef struct{
     char nomClasse[MAX_CHAR];
     int nbEtu;
     int compteurMatricule;
-    T_Etudiant * classe;
+    T_Etudiant * eleves;
 }T_Classe;
 
 // Definition d'une annee/section (1TI)
