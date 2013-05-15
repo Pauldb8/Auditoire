@@ -21,7 +21,7 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 	classeTemp.nbEtu = 2;
 
 	FILE *fichier;
-	char* url = NULL;
+	char* url;
 	int i;
 
 	T_Etudiant etudiants[2];
@@ -44,7 +44,7 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 	classeTemp.classe[1] = etudiants[1];
 
 	//Enregistrement
-	sprintf(url, "%s%s.%s.%s.bin", URL_SECTIONS ,nomSection, nomAnnee, classe.nomClasse);
+	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES ,nomSection, nomAnnee, classe.nomClasse);
 	if(DEBUG)
 		printf("\n\nURL : %s\n\n", url);
 	fichier = fopen(url, "wb");
@@ -62,12 +62,43 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 	}
 }
 
+/*
+ * chargerClasse(url, nomClasse): Cette fonction reçoit une URL de fichier binaire
+ * contenant toutes les informations d'une classe, elle les charge dans une strucutre
+ * de type T_Classe et les renvoit.
+ * @param : url du fichier binaire.
+ * @param : nom de la classe que l'on crée
+ * @return : un strucutre de type T_Classe remplie du fichier binaire.
+ */
+T_Classe chargerClasse(char *url, char* nomClasse){
+	FILE *fichier = NULL;
+	T_Classe *returnClasse;
+	fichier = fopen(fichier, "rb");
+	if(fichier == NULL){
+		printf("La classe est vide, vous devrez la remplir.");
+		returnClasse = (T_Classe*) malloc(sizeof(T_Classe));
+		strcpy(returnClasse->nomClasse, nomClasse);
+	}
+	else{
+		fread(returnClasse, sizeof(T_Classe), 1, fichier);
+		printf("Classe %s correctement chargée : ", returnClasse->nomClasse);
+		printf("il y a %d étudiants", returnClasse->nbEtu);
+		fclose(fichier)
+	}
+	return *returnClasse;
+}
+
 /**
  * Affiche un menu de choix des options possibles sur la classe.
  */
-void administrationClasse(T_Classe *classe, char* nomSection){
+void administrationClasse(T_Classe *classe, char* nomSection, char* nomAnnee){
 	int choix;
 	effacerEcran();
+	char *url;
+	//Chargement du fichier de la classe SI existant
+	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES ,nomSection, nomAnnee, classe->nomClasse);
+	*classe = chargerClasse(url, classe->nomClasse);
+	printf("\nNom de la classe chargee :");
 	printf("***Gestion d'une classe***");
 	printf("\n\t1. Ajouter un etudiant");
 	printf("\n\t2. Modifier un etudiant");
@@ -83,8 +114,8 @@ void administrationClasse(T_Classe *classe, char* nomSection){
 			//ajouterEtudiant(classe);
 			break;
 		case 6:
-			printf("%s", classe->nomClasse); system("PAUSE");
-			sauvegarderClasse(*classe, nomSection, classe->nomClasse);
+			printf("%s", nomSection); system("PAUSE");
+			sauvegarderClasse(*classe, nomSection, nomAnnee);
 			break;
 	}
 

@@ -60,7 +60,8 @@ T_Section choisirSectionACharger(char * dossier)
 		{
 			/*On passe les deux premières itérations car elles sont toujours*/
 			/* "." et ".." autrement dit, le dossier courant et le dossier supérieur.*/
-            if((i != 0) && (i != 1))
+			/*Et i != 2 car on ne veut pas lire le premier dossier qui est Classe */
+            if((i != 0) && (i != 1) && (i != 2))
             {
 				printf("\t%d. %s\n", j+1, ent->d_name);//On affiche les noms de fichiers
 

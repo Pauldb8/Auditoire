@@ -8,9 +8,9 @@
 #ifndef OPERATIONSETUDIANTS_H_
 #define OPERATIONSETUDIANTS_H_
 
-void creerEtudiant(T_Classe * );
-void administrationClasse(T_Classe *, char*);
+void administrationClasse(T_Classe *, char*, char*);
 void ajouterEtudiant(T_Classe *);
 void sauvegarderClasse(T_Classe, char*, char*);
+T_Classe chargerClasse(char*, char*);
 
 #endif /* OPERATIONSETUDIANTS_H_ */

@@ -11,6 +11,7 @@
 
 #define MAX_CHAR 51
 #define URL_SECTIONS "src/Sauvegardes/" //Où chercher les dossiers de Sections
+#define URL_CLASSES "src/Sauvegardes/Classes/"
 #define INCREMENTALLOC 3
 
 #define DEBUG 1
