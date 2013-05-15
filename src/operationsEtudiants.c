@@ -43,7 +43,7 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 
 	classeTemp.eleves = (T_Etudiant*) malloc( 2* sizeof(T_Etudiant));
 	memcpy(classeTemp.eleves, etudiants, (sizeof(T_Etudiant) * 2));
-	printf("Nom etudiant 1 : %s, etudiant 2 : %s\n\n", classeTemp.eleves[0].nom, classeTemp.eleves[1].nom);
+	printf("Nom etudiant 1 : %s, etudiant 2 : %s\n\n", classeTemp.eleves[0].prenom, classeTemp.eleves[1].prenom);
 
 	//Enregistrement
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES ,nomSection, nomAnnee, classe.nomClasse);
@@ -57,8 +57,7 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 		exit(0);
 	}
 	else{
-		fwrite(&classeTemp, sizeof(T_Classe), 1, fichier);
-		fwrite(&classeTemp.eleves, (sizeof(T_Etudiant) * 2), 1, fichier);
+		fwrite(&classeTemp, (sizeof(T_Classe) + sizeof(T_Etudiant) * 2), 1, fichier);
 		printf("Fichier correctement enregistre !");
 		system("PAUSE");
 	}
@@ -91,7 +90,6 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 	}
 	else{
 		fread(&returnClasse, sizeof(T_Classe), 1, fichier);
-		fread(returnClasse.eleves, sizeof(T_Etudiant), 1, fichier);
 		printf("Classe %s correctement chargée : ", returnClasse.nomClasse);
 		printf("il y a %d étudiants", returnClasse.nbEtu);
 		printf(" et ces etudiants sont : %s et %s", returnClasse.eleves[0].prenom, returnClasse.eleves[1].prenom);
