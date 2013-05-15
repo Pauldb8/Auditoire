@@ -58,6 +58,7 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 	}
 	else{
 		fwrite(&classeTemp, sizeof(T_Classe), 1, fichier);
+		fwrite(&classeTemp.eleves, (sizeof(T_Etudiant) * 2), 1, fichier);
 		printf("Fichier correctement enregistre !");
 		system("PAUSE");
 	}
@@ -90,8 +91,10 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 	}
 	else{
 		fread(&returnClasse, sizeof(T_Classe), 1, fichier);
+		fread(returnClasse.eleves, sizeof(T_Etudiant), 1, fichier);
 		printf("Classe %s correctement chargée : ", returnClasse.nomClasse);
 		printf("il y a %d étudiants", returnClasse.nbEtu);
+		printf(" et ces etudiants sont : %s et %s", returnClasse.eleves[0].prenom, returnClasse.eleves[1].prenom);
 		return returnClasse;
 	}
 }
@@ -104,7 +107,7 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 void afficherClasse(T_Classe a){
 	int i;
 	for(i = 0; i < a.nbEtu; i++){
-		printf("\nNom eleve %d : %s", i+1, a.eleves[i].prenom);
+		printf("\nNom eleve %d : %s", (i+1), a.eleves[i].prenom);
 	}
 }
 
@@ -115,10 +118,9 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	int choix;
 	char* url;
 	T_Classe classe;
+	strcpy(classe.nomClasse, nomClasse);
 
 	effacerEcran();
-	printf("\ntest : %s, nbEtu = %d\n", classe.eleves[0].prenom, classe.nbEtu);
-	system("PAUSE");
 	//Chargement du fichier de la classe SI existant
     url = malloc(MAX_CHAR * sizeof(char));
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES, nomSection, nomAnnee, nomClasse);

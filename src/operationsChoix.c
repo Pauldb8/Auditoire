@@ -28,8 +28,8 @@ void afficherMenuChoixClasse(T_Section sct, int choix)
         printf("\t%d. %s\n", i+1, sct.tabAnnees[choix].nomClasse[i]);
 
     printf("\nVotre choix : ");
-    scanf("%d", &choixAnnee);
-    administrationClasse(&sct.tabAnnees[choix].tabClasse[choixAnnee-1].nomClasse, sct.nom, sct.tabAnnees[choix].nomAnneeSection);
+    choixAnnee = getNumber(1, sct.tabAnnees[choix].nbClasses);
+    administrationClasse(sct.tabAnnees[choix].tabClasse[choixAnnee-1].nomClasse, sct.nom, sct.tabAnnees[choix].nomAnneeSection);
 }
 
 void afficherMenuChoixAnnee(T_Section * tab)
@@ -42,7 +42,7 @@ void afficherMenuChoixAnnee(T_Section * tab)
         printf("\t%d. %s\n", i+1, tab->tabAnnees[i].nomAnneeSection);
 
     printf("\nVotre choix : ");
-    scanf("%d", &choix);
+   choix = getNumber(1, tab->nbrAnnees);
 
     /*tab[choix - 1] car on propose 1 et 2 à la place de 0 et 1, étant les positions réelles dans le tableau*/
     afficherMenuChoixClasse(*tab, choix-1);
@@ -60,7 +60,7 @@ void administrationAnnees(T_Section * tab)
     printf("\t 2. Creer une annee\n\n");
 
     printf("Votre choix : ");
-    scanf("%d", &choix);
+    choix = getNumber(1, 2);
 
 
     if(choix == 2)
