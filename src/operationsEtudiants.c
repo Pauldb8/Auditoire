@@ -75,8 +75,6 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 		fread(eleves, (sizeof(T_Etudiant)*nbEtu), 1, fichier);
 		returnClasse.eleves = malloc(sizeof(T_Etudiant) * nbEtu);
 		returnClasse.eleves = eleves;
-		printf("Classe %s correctement chargée : ", returnClasse.nomClasse);
-		printf("il y a %d étudiants", returnClasse.nbEtu);
 		//printf(" et ces etudiants sont : %s et %s", returnClasse.eleves[0].prenom, returnClasse.eleves[1].prenom);
 		return returnClasse;
 	}
@@ -84,13 +82,16 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 
 /*
  * afficherClasse(T_Classe): Cette fonction affiche tous les élèves ainsi que leurs
- * notes dans la console.
+ * ainsi que leur matricule et permet d'en choisir un pour le modifier/visualiser/supprimer.
  * @param: La structure classe à afficher.
  */
-void afficherClasse(T_Classe a){
+void afficherClasse(T_Classe classe){
 	int i;
-	for(i = 0; i < a.nbEtu; i++){
-		printf("\nNom eleve %d : %s", (i+1), a.eleves[i].prenom);
+	effacerEcran();
+	printf("***Etudiants de la classe \"%s\"***\n", classe.nomClasse);
+	printf("Matricule\t\tNom\t\tPrenom\t\t");
+	for(i = 0; i < classe.nbEtu; i++){
+		printf("\n%s\t\t%s\t\t%s", classe.eleves[i].matricule, classe.eleves[i].nom, classe.eleves[i].prenom);
 	}
 	//printf("\nnomClasse = %s\n", a.nomClasse);
 }
@@ -103,7 +104,6 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	int choix;
 	char* url;
 	T_Classe classe;
-	strcpy(classe.nomClasse, nomClasse);
 
 	effacerEcran();
 	//Chargement du fichier de la classe SI existant
@@ -111,7 +111,9 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES, nomSection, nomAnnee, nomClasse);
 	classe = chargerClasse(url, nomClasse); //Chargement de la classe
 
-	printf("***Gestion d'une classe***");
+	printf("***Gestion d'une classe***\n");
+	printf("Classe %s correctement chargée : ", classe.nomClasse);
+	printf("il y a %d étudiants\n\n", classe.nbEtu);
 	printf("\n\t1. Ajouter un etudiant");
 	printf("\n\t2. Modifier un etudiant");
 	printf("\n\t3. Supprimer un etudiant");
