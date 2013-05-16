@@ -14,7 +14,7 @@
 #define URL_CLASSES "src/Sauvegardes/Classes/"
 #define INCREMENTALLOC 3
 
-#define DEBUG 1
+#define DEBUG 0
 #define TAILLE_MAX MAX_CHAR
 #define INCREMENTALLOC 3
 #define URI_FICHIERS URL_SECTIONS

@@ -16,40 +16,17 @@
 extern int errno ;
 
 void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
-	T_Classe classeTemp;
-	strcpy(classeTemp.nomClasse, classe.nomClasse);
-	classeTemp.nbEtu = 2;
-
 	FILE *fichier;
 	char* url;
-	int i;
-	url = malloc(MAX_CHAR * sizeof(char));
+	int nbEtu = classe.nbEtu;
+	url = malloc(MAX_CHAR * sizeof(char));//malloc de l'url
 
-	T_Etudiant *etudiants;
-	etudiants = malloc(2*sizeof(T_Etudiant));
-	strcpy(etudiants[0].matricule, "HE201089");
-	strcpy(etudiants[0].nom, "Nanson");
-	strcpy(etudiants[0].prenom, "Celien");
-	for(i = 0; i < 5; i ++)
-		etudiants[0].tabCotes[i] = 0;
-	etudiants[0].moyennePourcentage = 19.0;
-
-	strcpy(etudiants[1].matricule, "HE201089");
-	strcpy(etudiants[1].nom, "De Buck");
-	strcpy(etudiants[1].prenom, "Paul");
-	for(i = 0; i < 5; i ++)
-		etudiants[1].tabCotes[i] = 0;
-	etudiants[1].moyennePourcentage = 19.0;
-
-	classeTemp.eleves = (T_Etudiant*) malloc( 2* sizeof(T_Etudiant));
-	memcpy(classeTemp.eleves, etudiants, (sizeof(T_Etudiant) * 2));
-
-	printf("Nom etudiant 1 : %s, etudiant 2 : %s\n\n", classeTemp.eleves[0].prenom, classeTemp.eleves[1].prenom);
-
-	//Enregistrement
+	//Génération de l'url
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES ,nomSection, nomAnnee, classe.nomClasse);
 	if(DEBUG)
 		printf("\n\nURL : %s\n\n", url);
+
+	//Ouverture du fichier
 	fichier = fopen(url, "wb+");
 	if(fichier == NULL){
 		printf("Erreur lors de l'ouverture de %s\n", url);
@@ -57,9 +34,9 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 		printf( "Value of errno: %d\n", errno );
 		exit(0);
 	}
-	else{
-		fwrite(classeTemp.eleves, (sizeof(T_Etudiant)*2), 1, fichier);
-		fwrite(&classeTemp, sizeof(T_Classe), 1, fichier);
+	else{//Enregistrement dans le fichier
+		fwrite(&classe, sizeof(T_Classe), 1, fichier);
+		fwrite(classe.eleves, (sizeof(T_Etudiant)*nbEtu), 1, fichier);
 		printf("Fichier correctement enregistre !");
 		system("PAUSE");
 	}
@@ -78,8 +55,8 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 	T_Classe returnClasse;
 	T_Classe *returnClasseVide = NULL;
 	T_Etudiant *eleves = NULL;
-	eleves = malloc(sizeof(T_Etudiant) * 2);
-	printf("Voici l'url : %s\n", url);
+	int nbEtu;
+
 	fichier = fopen(url, "rb");
 	if(fichier == NULL){
 		returnClasseVide = (T_Classe*) malloc(sizeof(T_Classe));
@@ -92,10 +69,11 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 		printf("La classe \"%s\" est vide, vous devrez la remplir.", nomClasse);
 		return *returnClasseVide;
 	}
-	else{
-		fread(eleves, (sizeof(T_Etudiant)*2), 1, fichier);
+	else{//On lit d'abord la classe, comme cela on sait le nombre d'étudiants à malloc.
 		fread(&returnClasse, sizeof(T_Classe), 1, fichier);
-		returnClasse.eleves = malloc(sizeof(T_Etudiant) * 2);
+		nbEtu = returnClasse.nbEtu;
+		fread(eleves, (sizeof(T_Etudiant)*nbEtu), 1, fichier);
+		returnClasse.eleves = malloc(sizeof(T_Etudiant) * nbEtu);
 		returnClasse.eleves = eleves;
 		printf("Classe %s correctement chargée : ", returnClasse.nomClasse);
 		printf("il y a %d étudiants", returnClasse.nbEtu);
@@ -131,9 +109,8 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	//Chargement du fichier de la classe SI existant
     url = malloc(MAX_CHAR * sizeof(char));
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES, nomSection, nomAnnee, nomClasse);
-	classe = chargerClasse(url, nomClasse);
+	classe = chargerClasse(url, nomClasse); //Chargement de la classe
 
-	printf("\nNom de la classe chargee :");
 	printf("***Gestion d'une classe***");
 	printf("\n\t1. Ajouter un etudiant");
 	printf("\n\t2. Modifier un etudiant");
