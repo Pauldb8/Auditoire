@@ -1,9 +1,5 @@
-/*
- * operationsEtudiants.c
- *
- *  Created on: 14 mai 2013
- *      Author: Paul
- */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +17,7 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 	int nbEtu = classe.nbEtu;
 	url = malloc(MAX_CHAR * sizeof(char));//malloc de l'url
 
-	//G�n�ration de l'url
+	//Génération de l'url
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES ,nomSection, nomAnnee, classe.nomClasse);
 	if(DEBUG)
 		printf("\n\nURL : %s\n\n", url);
@@ -43,11 +39,11 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 }
 
 /*
- * chargerClasse(url, nomClasse): Cette fonction re�oit une URL de fichier binaire
+ * chargerClasse(url, nomClasse): Cette fonction reçoit une URL de fichier binaire
  * contenant toutes les informations d'une classe, elle les charge dans une strucutre
  * de type T_Classe et les renvoit.
  * @param : url du fichier binaire.
- * @param : nom de la classe que l'on cr�e
+ * @param : nom de la classe que l'on crée
  * @return : un strucutre de type T_Classe remplie du fichier binaire.
  */
 T_Classe chargerClasse(char *url, char* nomClasse){
@@ -62,36 +58,35 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 		returnClasseVide = (T_Classe*) malloc(sizeof(T_Classe));
 
 		//Si le fichier de chargement de classe n'existe pas
-		//On cr�e une classe vide avec son nom et le nombre d'�tudiant � 0.
+		//On crée une classe vide avec son nom et le nombre d'étudiant à 0.
 		strcpy(returnClasseVide->nomClasse, nomClasse);
 		returnClasseVide->nbEtu = 0;
 
 		printf("La classe \"%s\" est vide, vous devrez la remplir.", nomClasse);
 		return *returnClasseVide;
 	}
-	else{//On lit d'abord la classe, comme cela on sait le nombre d'�tudiants � malloc.
+	else{//On lit d'abord la classe, comme cela on sait le nombre d'étudiants à malloc.
 		fread(&returnClasse, sizeof(T_Classe), 1, fichier);
 		nbEtu = returnClasse.nbEtu;
 		fread(eleves, (sizeof(T_Etudiant)*nbEtu), 1, fichier);
 		returnClasse.eleves = malloc(sizeof(T_Etudiant) * nbEtu);
 		returnClasse.eleves = eleves;
+		printf("Classe %s correctement chargee : ", returnClasse.nomClasse);
+		printf("il y a %d etudiants", returnClasse.nbEtu);
 		//printf(" et ces etudiants sont : %s et %s", returnClasse.eleves[0].prenom, returnClasse.eleves[1].prenom);
 		return returnClasse;
 	}
 }
 
 /*
- * afficherClasse(T_Classe): Cette fonction affiche tous les �l�ves ainsi que leurs
- * ainsi que leur matricule et permet d'en choisir un pour le modifier/visualiser/supprimer.
- * @param: La structure classe � afficher.
+ * afficherClasse(T_Classe): Cette fonction affiche tous les élèves ainsi que leurs
+ * notes dans la console.
+ * @param: La structure classe à afficher.
  */
-void afficherClasse(T_Classe classe){
+void afficherClasse(T_Classe a){
 	int i;
-	effacerEcran();
-	printf("***Etudiants de la classe \"%s\"***\n", classe.nomClasse);
-	printf("Matricule\t\tNom\t\tPrenom\t\t");
-	for(i = 0; i < classe.nbEtu; i++){
-		printf("\n%s\t\t%s\t\t%s", classe.eleves[i].matricule, classe.eleves[i].nom, classe.eleves[i].prenom);
+	for(i = 0; i < a.nbEtu; i++){
+		printf("\nNom eleve %d : %s", (i+1), a.eleves[i].prenom);
 	}
 	//printf("\nnomClasse = %s\n", a.nomClasse);
 }
@@ -104,6 +99,7 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	int choix;
 	char* url;
 	T_Classe classe;
+	strcpy(classe.nomClasse, nomClasse);
 
 	effacerEcran();
 	//Chargement du fichier de la classe SI existant
@@ -111,9 +107,8 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES, nomSection, nomAnnee, nomClasse);
 	classe = chargerClasse(url, nomClasse); //Chargement de la classe
 
-	printf("***Gestion d'une classe***\n");
-	printf("Classe %s correctement charg�e : ", classe.nomClasse);
-	printf("il y a %d �tudiants\n\n", classe.nbEtu);
+    do{
+	printf("***Gestion d'une classe***\n\n");
 	printf("\n\t1. Ajouter un etudiant");
 	printf("\n\t2. Modifier un etudiant");
 	printf("\n\t3. Supprimer un etudiant");
@@ -131,50 +126,53 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 			afficherClasse(classe);
 			break;
 		case 6:
-			printf("%s", nomSection); system("PAUSE");
 			sauvegarderClasse(classe, nomSection, nomAnnee);
 			break;
 	}
 
+    }while(choix != 7);
+
 }
 
-void ajouterEtudiant(T_Classe * classe)
+void ajouterEtudiant(T_Classe * a)
 {
-    T_Etudiant etu; 
-    char recommencer = 0; 
-    
-    printf("*** Menu d'ajout d'un etudiant dans la classe %s ***\n\n", classe->nomClasse);
-    
+    T_Etudiant etu;
+    char recommencer = 0;
+
+    printf("*** Menu d'ajout d'un etudiant dans la classe %s ***\n\n", a->nomClasse);
+
     do{
-    printf("Matricule : "); 
+    printf("Matricule : ");
     fflush(stdin);
-    gets(etu.matricule); 
-    printf("Nom : "); 
+    gets(etu.matricule);
+    printf("Nom : ");
     fflush(stdin);
     gets(etu.nom);
-    printf("Prenom : "); 
+    printf("Prenom : ");
     fflush(stdin);
     gets(etu.prenom);
-    printf("Ville : "); 
+    printf("Ville : ");
     fflush(stdin);
     gets(etu.ville);
-    printf("Rue : "); 
+    printf("Rue : ");
     fflush(stdin);
     gets(etu.rue);
-    printf("Numero de rue : "); 
+    printf("Numero de rue : ");
     fflush(stdin);
     etu.num = getNumber(0, 100);
-    printf("Code Postal  : "); 
+    printf("Code Postal  : ");
     fflush(stdin);
-    etu.cp = getNumber(1000, 9999);
-    
-    classe->eleves[classe->nbEtu] = etu;
-    classe->nbEtu++;
-    
-    printf("Ajouter encore un etudiant ? (o/n) "); 
-    scanf("%c", &recommencer);  
-    
-    }while(recommencer == 'o' || recommencer == 'O'); 
+    etu.cp = getNumber(1000, 9999); // Code postal differents en Belgique.
+
+    a->eleves = realloc(a->eleves, a->nbEtu * sizeof(T_Etudiant));
+    a->eleves[a->nbEtu] = etu;
+    a->nbEtu ++;
+
+    printf("Ajouter encore un etudiant ? (o/n) ");
+    fflush(stdin);
+    scanf("%c", &recommencer);
+
+    }while(recommencer == 'o' || recommencer == 'O');
 
 
 }
