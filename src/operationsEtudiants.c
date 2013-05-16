@@ -125,7 +125,7 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	choix = getNumber(1, 7);
 	switch(choix){
 		case 1:
-			ajouterEtudiant(classe);
+			ajouterEtudiant(&classe);
 			break;
 		case 4:
 			afficherClasse(classe);
@@ -138,38 +138,38 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 
 }
 
-void ajouterEtudiant(T_Classe * a)
+void ajouterEtudiant(T_Classe * classe)
 {
     T_Etudiant etu; 
     char recommencer = 0; 
     
-    printf("*** Menu d'ajout d'un etudiant dans la classe %s ***\n\n", a->nomClasse);
+    printf("*** Menu d'ajout d'un etudiant dans la classe %s ***\n\n", classe->nomClasse);
     
     do{
     printf("Matricule : "); 
-    fflush(sttdin); 
+    fflush(stdin);
     gets(etu.matricule); 
     printf("Nom : "); 
-    fflush(sttdin); 
+    fflush(stdin);
     gets(etu.nom);
     printf("Prenom : "); 
-    fflush(sttdin); 
+    fflush(stdin);
     gets(etu.prenom);
     printf("Ville : "); 
-    fflush(sttdin); 
+    fflush(stdin);
     gets(etu.ville);
     printf("Rue : "); 
-    fflush(sttdin); 
+    fflush(stdin);
     gets(etu.rue);
     printf("Numero de rue : "); 
-    fflush(sttdin); 
+    fflush(stdin);
     etu.num = getNumber(0, 100);
     printf("Code Postal  : "); 
-    fflush(sttdin); 
+    fflush(stdin);
     etu.cp = getNumber(1000, 9999);
     
-    a->eleves[a->nbEtu + 1] = etu; 
-    a->nbEtu ++; 
+    classe->eleves[classe->nbEtu] = etu;
+    classe->nbEtu++;
     
     printf("Ajouter encore un etudiant ? (o/n) "); 
     scanf("%c", &recommencer);  
