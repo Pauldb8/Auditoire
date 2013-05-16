@@ -32,7 +32,7 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 	}
 	else{//Enregistrement dans le fichier
 		fwrite(&classe, sizeof(T_Classe), 1, fichier);
-		fwrite(classe.eleves, (sizeof(T_Etudiant)*nbEtu), 1, fichier);
+		fwrite(classe.eleves, sizeof(T_Etudiant)*nbEtu, 1, fichier);
 		printf("Fichier correctement enregistre !");
 		system("PAUSE");
 	}
@@ -101,11 +101,14 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	T_Classe classe;
 	strcpy(classe.nomClasse, nomClasse);
 
+	printf("%s", classe.eleves[0].matricule); system("pause");
+
 	effacerEcran();
 	//Chargement du fichier de la classe SI existant
     url = malloc(MAX_CHAR * sizeof(char));
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES, nomSection, nomAnnee, nomClasse);
 	classe = chargerClasse(url, nomClasse); //Chargement de la classe
+	effacerEcran();
 
     do{
 	printf("***Gestion d'une classe***\n\n");
@@ -142,37 +145,36 @@ void ajouterEtudiant(T_Classe * a)
     printf("*** Menu d'ajout d'un etudiant dans la classe %s ***\n\n", a->nomClasse);
 
     do{
-    printf("Matricule : ");
-    fflush(stdin);
-    gets(etu.matricule);
-    printf("Nom : ");
-    fflush(stdin);
-    gets(etu.nom);
-    printf("Prenom : ");
-    fflush(stdin);
-    gets(etu.prenom);
-    printf("Ville : ");
-    fflush(stdin);
-    gets(etu.ville);
-    printf("Rue : ");
-    fflush(stdin);
-    gets(etu.rue);
-    printf("Numero de rue : ");
-    fflush(stdin);
-    etu.num = getNumber(0, 100);
-    printf("Code Postal  : ");
-    fflush(stdin);
-    etu.cp = getNumber(1000, 9999); // Code postal differents en Belgique.
+        printf("Matricule : ");
+        scanf("%s", etu.matricule);
+        printf("Nom : ");
+        scanf("%s", etu.nom);
+        printf("Prenom : ");
+        scanf("%s", etu.prenom);
+        printf("Ville : ");
+        scanf("%s", etu.ville);
+        printf("Rue : ");
+        scanf("%s", etu.rue);
+        printf("Numero de rue : ");
+        scanf("%d", &etu.num);
+        printf("Code Postal (valide, donc entre 1000 et 9999) : ");
+        scanf("%d", &etu.cp);
 
-    a->eleves = realloc(a->eleves, a->nbEtu * sizeof(T_Etudiant));
-    a->eleves[a->nbEtu] = etu;
-    a->nbEtu ++;
+        printf("%d", a->nbEtu); system("pause");
 
-    printf("Ajouter encore un etudiant ? (o/n) ");
-    fflush(stdin);
-    scanf("%c", &recommencer);
+        if(a->nbEtu == 0)
+            a->eleves = malloc(sizeof(T_Etudiant));
+        else
+            a->eleves = realloc(a->eleves,(a->nbEtu + 1) * sizeof(T_Etudiant));
 
-    }while(recommencer == 'o' || recommencer == 'O');
+        a->eleves[a->nbEtu] = etu;
+        a->nbEtu ++;
+
+        printf("Ajouter encore un etudiant ? (o/n) ");
+        fflush(stdin);
+        scanf("%c", &recommencer);
+
+        }while(recommencer == 'o' || recommencer == 'O');
 
 
 }
