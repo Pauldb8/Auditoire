@@ -21,7 +21,7 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 	int nbEtu = classe.nbEtu;
 	url = malloc(MAX_CHAR * sizeof(char));//malloc de l'url
 
-	//Génération de l'url
+	//Gï¿½nï¿½ration de l'url
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES ,nomSection, nomAnnee, classe.nomClasse);
 	if(DEBUG)
 		printf("\n\nURL : %s\n\n", url);
@@ -43,11 +43,11 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 }
 
 /*
- * chargerClasse(url, nomClasse): Cette fonction reçoit une URL de fichier binaire
+ * chargerClasse(url, nomClasse): Cette fonction reï¿½oit une URL de fichier binaire
  * contenant toutes les informations d'une classe, elle les charge dans une strucutre
  * de type T_Classe et les renvoit.
  * @param : url du fichier binaire.
- * @param : nom de la classe que l'on crée
+ * @param : nom de la classe que l'on crï¿½e
  * @return : un strucutre de type T_Classe remplie du fichier binaire.
  */
 T_Classe chargerClasse(char *url, char* nomClasse){
@@ -62,14 +62,14 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 		returnClasseVide = (T_Classe*) malloc(sizeof(T_Classe));
 
 		//Si le fichier de chargement de classe n'existe pas
-		//On crée une classe vide avec son nom et le nombre d'étudiant à 0.
+		//On crï¿½e une classe vide avec son nom et le nombre d'ï¿½tudiant ï¿½ 0.
 		strcpy(returnClasseVide->nomClasse, nomClasse);
 		returnClasseVide->nbEtu = 0;
 
 		printf("La classe \"%s\" est vide, vous devrez la remplir.", nomClasse);
 		return *returnClasseVide;
 	}
-	else{//On lit d'abord la classe, comme cela on sait le nombre d'étudiants à malloc.
+	else{//On lit d'abord la classe, comme cela on sait le nombre d'ï¿½tudiants ï¿½ malloc.
 		fread(&returnClasse, sizeof(T_Classe), 1, fichier);
 		nbEtu = returnClasse.nbEtu;
 		fread(eleves, (sizeof(T_Etudiant)*nbEtu), 1, fichier);
@@ -81,9 +81,9 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 }
 
 /*
- * afficherClasse(T_Classe): Cette fonction affiche tous les élèves ainsi que leurs
+ * afficherClasse(T_Classe): Cette fonction affiche tous les ï¿½lï¿½ves ainsi que leurs
  * ainsi que leur matricule et permet d'en choisir un pour le modifier/visualiser/supprimer.
- * @param: La structure classe à afficher.
+ * @param: La structure classe ï¿½ afficher.
  */
 void afficherClasse(T_Classe classe){
 	int i;
@@ -112,8 +112,8 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	classe = chargerClasse(url, nomClasse); //Chargement de la classe
 
 	printf("***Gestion d'une classe***\n");
-	printf("Classe %s correctement chargée : ", classe.nomClasse);
-	printf("il y a %d étudiants\n\n", classe.nbEtu);
+	printf("Classe %s correctement chargï¿½e : ", classe.nomClasse);
+	printf("il y a %d ï¿½tudiants\n\n", classe.nbEtu);
 	printf("\n\t1. Ajouter un etudiant");
 	printf("\n\t2. Modifier un etudiant");
 	printf("\n\t3. Supprimer un etudiant");
@@ -125,7 +125,7 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 	choix = getNumber(1, 7);
 	switch(choix){
 		case 1:
-			//ajouterEtudiant(classe);
+			ajouterEtudiant(classe);
 			break;
 		case 4:
 			afficherClasse(classe);
@@ -135,5 +135,46 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee){
 			sauvegarderClasse(classe, nomSection, nomAnnee);
 			break;
 	}
+
+}
+
+void ajouterEtudiant(T_Classe * a)
+{
+    T_Etudiant etu; 
+    char recommencer = 0; 
+    
+    printf("*** Menu d'ajout d'un etudiant dans la classe %s ***\n\n", a->nomClasse);
+    
+    do{
+    printf("Matricule : "); 
+    fflush(sttdin); 
+    gets(etu.matricule); 
+    printf("Nom : "); 
+    fflush(sttdin); 
+    gets(etu.nom);
+    printf("Prenom : "); 
+    fflush(sttdin); 
+    gets(etu.prenom);
+    printf("Ville : "); 
+    fflush(sttdin); 
+    gets(etu.ville);
+    printf("Rue : "); 
+    fflush(sttdin); 
+    gets(etu.rue);
+    printf("Numero de rue : "); 
+    fflush(sttdin); 
+    etu.num = getNumber(0, 100);
+    printf("Code Postal  : "); 
+    fflush(sttdin); 
+    etu.cp = getNumber(1000, 9999);
+    
+    a->eleves[a->nbEtu + 1] = etu; 
+    a->nbEtu ++; 
+    
+    printf("Ajouter encore un etudiant ? (o/n) "); 
+    scanf("%c", &recommencer);  
+    
+    }while(recommencer == 'o' || recommencer == 'O'); 
+
 
 }
