@@ -78,6 +78,7 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 	T_Classe returnClasse;
 	T_Classe *returnClasseVide = NULL;
 	T_Etudiant *eleves = NULL;
+	eleves = malloc(sizeof(T_Etudiant) * 2);
 	printf("Voici l'url : %s\n", url);
 	fichier = fopen(url, "rb");
 	if(fichier == NULL){
@@ -94,7 +95,8 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 	else{
 		fread(eleves, (sizeof(T_Etudiant)*2), 1, fichier);
 		fread(&returnClasse, sizeof(T_Classe), 1, fichier);
-		memcpy(returnClasse.eleves, eleves, (sizeof(T_Etudiant)*2));
+		returnClasse.eleves = malloc(sizeof(T_Etudiant) * 2);
+		returnClasse.eleves = eleves;
 		printf("Classe %s correctement chargée : ", returnClasse.nomClasse);
 		printf("il y a %d étudiants", returnClasse.nbEtu);
 		//printf(" et ces etudiants sont : %s et %s", returnClasse.eleves[0].prenom, returnClasse.eleves[1].prenom);
