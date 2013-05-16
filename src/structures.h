@@ -11,14 +11,6 @@
 
 #define MAX_CHAR 51
 
-
-typedef struct{
-    char rue[MAX_CHAR];
-    char ville[MAX_CHAR];
-    int num;
-    int cp;
-}T_Adresse;
-
 typedef struct
 {
     char matricule[MAX_CHAR];
@@ -26,7 +18,10 @@ typedef struct
     char prenom[MAX_CHAR];
     double tabCotes[5];
     double moyennePourcentage;
-    T_Adresse adr;
+    char rue[MAX_CHAR];
+    char ville[MAX_CHAR];
+    int num;
+    int cp;
 }T_Etudiant;
 
 typedef struct{
