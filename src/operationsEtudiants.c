@@ -296,6 +296,7 @@ void supprimerEtudiant(T_Classe *a)
     else
     {
         printf("Etes-vous sur de vouloir supprimer %s (O/N) : ", a->eleves[indiceEtu].nom);
+        fflush(stdin);
         scanf("%c", &sur);
         if((sur == 'O') || (sur == 'o'))
         {
