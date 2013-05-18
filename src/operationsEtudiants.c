@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -282,6 +281,7 @@ void supprimerEtudiant(T_Classe *a)
     printf("*** Menu de suppresion d'un etudiant *** \n\n");
 
     printf("Matricule de l'etudiant a supprimer : ");
+    fflush(stdin); 
     scanf("%s", mat);
 
     /*Resultat recherche correspond à l'indice de l'étudiant, si celui-ci existe.*/
