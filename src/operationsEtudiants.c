@@ -43,6 +43,7 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 		fclose(fichier);
 		printf("Fichier correctement enregistre !\n\n");
 		system("PAUSE");
+		effacerEcran();
 	}
 }
 
