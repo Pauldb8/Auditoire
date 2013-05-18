@@ -1,5 +1,4 @@
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -304,7 +303,7 @@ void supprimerEtudiant(T_Classe *a)
                 a->eleves[indiceEtu] = a->eleves[indiceEtu + 1];
             }
             a -> nbEtu--;
-            a->eleves = realloc(a->eleves, sizeof(T_Etudiant) * a->nbEtu); //On diminue l'espace pris en mémoire.
+            a->eleves = realloc(a->eleves, sizeof(T_Etudiant) * a->nbEtu); //On diminue l'espace pris en mï¿½moire.
             printf("OK ! ");
             system("pause");
             system("cls");
@@ -383,6 +382,9 @@ void modifierEtudiant(T_Classe * a, T_Cours *tabCours, int nbCours)
 void modifierCotes(T_Etudiant * etu, T_Cours *tabCours, int nbCours)
 {
 	int i = 0;
+	
+	/*Malloc de dÃ©part, sans quoi le realloc ne fonctionne pas*/
+	etu->tabCotes = malloc(INCREMENTALLOC * sizeof(T_Cours));
 
 	//Allocation du tableau de cotes:
 	etu->tabCotes = realloc(etu->tabCotes, sizeof(T_Cours) * nbCours);
