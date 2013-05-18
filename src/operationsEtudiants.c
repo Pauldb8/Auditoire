@@ -19,6 +19,8 @@ void sauvegarderClasse(T_Classe classe, char *nomSection, char *nomAnnee){
 	char* url;
 	int nbEtu = classe.nbEtu;
 	url = malloc(MAX_CHAR * sizeof(char));//malloc de l'url
+	if(url == NULL)
+        exit(0);
 
 	//Génération de l'url
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES ,nomSection, nomAnnee, classe.nomClasse);
@@ -75,10 +77,11 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 
 	else
     {   //On lit d'abord la classe, comme cela on sait le nombre d'étudiants à mallocer.
-        //returnClasse = malloc(1 * sizeof(T_Classe));
 		fread(&returnClasse, sizeof(T_Classe), 1, fichier);
 
 		returnClasse.eleves = malloc(returnClasse.nbEtu * sizeof(T_Etudiant));
+		if(returnClasse.eleves == NULL)
+            exit(0);
 		fread(returnClasse.eleves, returnClasse.nbEtu * sizeof(T_Etudiant), 1, fichier);
 
 		printf("Classe %s correctement chargee : ", returnClasse.nomClasse);
@@ -136,11 +139,15 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee)
 	classe.nbEtu = 0;
 	/*Malloc de départ*/
 	classe.eleves = malloc(INCREMENTALLOC * sizeof(T_Etudiant));
+	if(classe.eleves == NULL)
+        exit(0);
 
 	effacerEcran();
 
 	/*Chargement du fichier de la classe SI existant*/
     url = malloc(MAX_CHAR * sizeof(char));
+    if(url == NULL)
+        exit(0);
 	sprintf(url, "%s%s.%s.%s.bin", URL_CLASSES, nomSection, nomAnnee, nomClasse);
 
 	/*Chargement de la classe*/
@@ -208,6 +215,8 @@ void afficherClassementTexte(T_Classe a, char * nomSection, char * nomAnnee)
     FILE *fichier = NULL;
 	char* url = NULL;
 	url = malloc(MAX_CHAR * sizeof(char));//malloc de l'url
+	if(url == NULL)
+        exit(0);
 	int i = 0;
 
 	//Génération de l'url
