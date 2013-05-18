@@ -276,7 +276,7 @@ void afficherClassementConsole(T_Classe a)
 void supprimerEtudiant(T_Classe *a)
 {
     int i = 0;
-    char mat[51];
+    char mat[MAX_CHAR];
     char sur;
 
     effacerEcran();
@@ -284,8 +284,7 @@ void supprimerEtudiant(T_Classe *a)
     printf("*** Menu de suppresion d'un etudiant *** \n\n");
 
     printf("Matricule de l'etudiant a supprimer : ");
-    fflush(stdin);
-    gets(mat);
+    scanf("%s", mat);
 
     /*Resultat recherche correspond à l'indice de l'étudiant, si celui-ci existe.*/
     int indiceEtu = rechercherEtudiant((*a), mat);
@@ -300,12 +299,13 @@ void supprimerEtudiant(T_Classe *a)
     {
         printf("Etes-vous sur de vouloir supprimer %s (O/N) : ", a->eleves[indiceEtu].nom);
         scanf("%c", &sur);
-        if((sur == 'O') ||(sur == 'o'))
+        if((sur == 'O') || (sur == 'o'))
         {
-            for(i = indiceEtu ; i < (*a).nbEtu ; i++){
+            for(i = indiceEtu ; i < (*a).nbEtu-1 ; i++){
                 a->eleves[indiceEtu] = a->eleves[indiceEtu + 1];
             }
             a -> nbEtu--;
+            a->eleves = realloc(a->eleves, sizeof(T_Etudiant) * a->nbEtu); //On diminue l'espace pris en m�moire.
             printf("OK ! ");
             system("pause");
             system("cls");

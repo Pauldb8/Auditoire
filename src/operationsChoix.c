@@ -37,7 +37,7 @@ void administrerCours(T_Section *section, int anneeChoisie){
 		printf("\t5. Enregistrer le fichier des cours\n");
 		printf("\t6. Retour\n");
 		printf("\nVotre choix: ");
-		choix = getNumber(1, 5);
+		choix = getNumber(1, 6);
 
 		switch(choix){
 		case 1:
@@ -53,11 +53,11 @@ void administrerCours(T_Section *section, int anneeChoisie){
 			modifierCours(&section->tabAnnees[anneeChoisie]);
 			break;
 		case 4:
-			//supprimerCours(annee);
+			supprimerCours(&section->tabAnnees[anneeChoisie]);
 			break;
 		case 5:
 			sauverFichierParametrage(*section);
-			printf("\nEnregistrement effectue !");
+			printf("\nEnregistrement effectue !\n");
 			system("PAUSE");
 			break;
 		}

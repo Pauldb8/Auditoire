@@ -24,7 +24,7 @@ T_Section creerSection(char * URL)
     scanf("%d", &aRenvoyer.nbrAnnees);
 
     // Création d'uine classe vide.
-    T_Annee *tabAnnees;
+    T_Annee *tabAnnees = NULL;
     aRenvoyer.tabAnnees = tabAnnees;
 
     printf("TODO");
