@@ -3,7 +3,7 @@
  * structures.h
  *
  *  Created on: 10 mai 2013
- *      Author: Paul, Célien And Steeves
+ *      Author: Paul, CÃ©lien And Steeves
  */
 
 #ifndef STRUCTURES_H_
@@ -18,6 +18,7 @@ typedef struct
     char prenom[MAX_CHAR];
     double tabCotes[5];
     double moyennePourcentage;
+    int nbEchecs;
     char rue[MAX_CHAR];
     char ville[MAX_CHAR];
     int num;
@@ -47,7 +48,7 @@ typedef struct{
 }T_Annee;
 
 
-//Structure qui contiendra les différents années section possibles
+//Structure qui contiendra les diffÃ©rents annÃ©es section possibles
 typedef struct{
 	char nom[MAX_CHAR];
 	int nbrAnnees;
