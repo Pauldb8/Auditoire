@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <dirent.h> //Pour la lecture des dossiers
 #include <errno.h> //traitement des erreurs pour opendir
+#include <windows.h>
 extern int errno ;
 
 

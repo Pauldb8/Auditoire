@@ -10,6 +10,7 @@
 
 void creerEtudiant(T_Classe *);
 void administrationAnnees(T_Section *);
+void administrerCours(T_Section *, int);
 void choisirAnnee(T_Annee *);
 void afficherMenuChoixAnnee(T_Section * tab);
 void afficherMenuChoixClasse(T_Section, int);

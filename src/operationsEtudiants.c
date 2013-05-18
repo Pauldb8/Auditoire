@@ -157,13 +157,15 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee)
     do
     {
         printf("***Gestion d'une classe***\n\n");
-        printf("\n\t1. Ajouter un etudiant");
-        printf("\n\t2. Modifier un etudiant");
-        printf("\n\t3. Supprimer un etudiant");
-        printf("\n\t4. Afficher la classe");
-        printf("\n\t5. Afficher un classement des etudiants");
-        printf("\n\t6. Sauvegarder la classe");
-        printf("\n\t7. Retour\n\n");
+        	printf("\tEtudiants:");
+				printf("\n\t\t1. Ajouter un etudiant");
+				printf("\n\t\t2. Modifier un etudiant");
+				printf("\n\t\t3. Supprimer un etudiant");
+			printf("\n\tClasse:");
+				printf("\n\t\t4. Afficher la classe");
+				printf("\n\t\t5. Afficher un classement des etudiants");
+				printf("\n\t\t6. Sauvegarder la classe");
+        printf("\n\n\t\t7. Retour\n\n");
         printf("Votre choix : ");
         choix = getNumber(1, 7);
 

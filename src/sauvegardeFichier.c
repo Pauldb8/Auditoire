@@ -23,7 +23,7 @@ void sauverFichierParametrage(T_Section section)
     char *fichier = section.nom;
     int nbr = section.nbrAnnees;
     T_Annee * tab = section.tabAnnees;
-    char *urlComplet = "";
+    char urlComplet[MAX_CHAR];
     int i = 0, j = 0, k = 0;
 
     sprintf(urlComplet,"%s%s.txt",URL_SECTIONS,fichier); //Concaténation URLDOSSIER+URLFICHIER
@@ -39,23 +39,41 @@ void sauverFichierParametrage(T_Section section)
 		printf( "Value of errno: %d\n", errno );
 		exit(0);
     }
+    if(DEBUG)
+    	printf("Fichier correctement ouvert en ecriture\n");
 
     fprintf(f, "%d;\n", nbr); // Ecriture du nombre total d'années/sections.
+    if(DEBUG)
+    	printf("nbAnnee = %d\n", nbr);
 
     for(i = 0 ; i < nbr ; i++)
     {
         fprintf(f, "%s;", tab[i].nomAnneeSection);
         fprintf(f, "%d;", tab[i].nbClasses);
+
+        if(DEBUG)
+        {
+        	printf("nom Section %s, nombre de classe : %d\n", tab[i].nomAnneeSection, tab[i].nbClasses);
+        	printf("Classes:\n");
+        }
+
         for(j = 0 ; j < tab[i].nbClasses ; j++)
         {
             fprintf(f, "%s;", tab[i].nomClasse[j]);
+
+            if(DEBUG)
+            	printf("\t%s\n", tab[i].nomClasse[j]);
         }
 
         fprintf(f, "%d;", tab[i].nbCoursParEtudiant);
+        if(DEBUG)
+        	printf("nbCoursParEtudiant = %d\nCours:\n", tab[i].nbCoursParEtudiant);
         for(k = 0 ; k < tab[i].nbCoursParEtudiant ; k++)
         {
             fprintf(f, "%s;", tab[i].tabCours[k].nomCours);
             fprintf(f, "%d;", tab[i].tabCours[k].ponderation);
+            if(DEBUG)
+            	printf("\t%s (%d)", tab[i].tabCours[k].nomCours, tab[i].tabCours[k].ponderation);
         }
 
         fprintf(f, "\n");

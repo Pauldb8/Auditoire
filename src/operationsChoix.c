@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "administrationCours.h"
 #include "structures.h"
 #include "fichierParametrage.h"
 #include "sauvegardeFichier.h"
@@ -16,9 +17,55 @@
 #include "tools.h"
 
 
+/**
+ * administrationCours(T_Section *, choix): Cette fonction permet d'ajouter/modifier/supprimer/afficher
+ * les cours donnés en l'année dont on reçoit le pointeur en paramètre. Elle permet
+ * aussi d'en modifier les pondérations.
+ * @param: pointeur vers la section qui contient l'année à administrer.
+ * @param: l'index dans le tableau section correspondant à l'année choisie.
+ */
+void administrerCours(T_Section *section, int anneeChoisie){
+	int choix;
+	do{
+		effacerEcran();
+		printf("***Gestion des cours de %s***\n\n", section->tabAnnees[anneeChoisie].nomAnneeSection);
+
+		printf("\t1. Afficher les cours et leurs ponderations\n");
+		printf("\t2. Ajouter un cours\n");
+		printf("\t3. Modifier un cours\n");
+		printf("\t4. Supprimer un cours\n");
+		printf("\t5. Enregistrer le fichier des cours\n");
+		printf("\t6. Retour\n");
+		printf("\nVotre choix: ");
+		choix = getNumber(1, 5);
+
+		switch(choix){
+		case 1:
+			effacerEcran();
+			afficherCours(section->tabAnnees[anneeChoisie]);
+			system("PAUSE");
+			break;
+		case 2:
+			ajouterCours(&section->tabAnnees[anneeChoisie]);
+
+			break;
+		case 3:
+			modifierCours(&section->tabAnnees[anneeChoisie]);
+			break;
+		case 4:
+			//supprimerCours(annee);
+			break;
+		case 5:
+			sauverFichierParametrage(*section);
+			printf("\nEnregistrement effectue !");
+			system("PAUSE");
+			break;
+		}
+	}while(choix != 6);
+}
+
 void afficherMenuChoixClasse(T_Section sct, int choix)
 {
-    system("cls");
     int i, choixAnnee;
 
     effacerEcran();
@@ -27,9 +74,15 @@ void afficherMenuChoixClasse(T_Section sct, int choix)
     for(i = 0 ; i < sct.tabAnnees[choix].nbClasses ; i++)
         printf("\t%d. %s\n", i+1, sct.tabAnnees[choix].nomClasse[i]);
 
-    printf("\nVotre choix : ");
-    choixAnnee = getNumber(1, sct.tabAnnees[choix].nbClasses);
-    administrationClasse(sct.tabAnnees[choix].tabClasse[choixAnnee-1].nomClasse, sct.nom, sct.tabAnnees[choix].nomAnneeSection);
+    printf("\n\t%d. Ou administrer les cours donnes en cette annee", i+1);
+
+    printf("\n\nVotre choix : ");
+    choixAnnee = getNumber(1, i+1);
+
+    if(choixAnnee == (i+1))
+    	administrerCours(&sct, choix);
+    else
+    	administrationClasse(sct.tabAnnees[choix].tabClasse[choixAnnee-1].nomClasse, sct.nom, sct.tabAnnees[choix].nomAnneeSection);
 }
 
 void afficherMenuChoixAnnee(T_Section * tab)
@@ -122,10 +175,11 @@ void administrationAnnees(T_Section * tab)
 
     else if(choix == 1)
     {
-        printf("Chargement des classes effectue.\n\n");
-        system("Pause");
+        //printf("Chargement des classes effectue.\n\n");
+        //system("Pause");
         effacerEcran();
         afficherMenuChoixAnnee(tab);
     }
 
 }
+

@@ -26,7 +26,7 @@ int main(void) {
 
 	effacerEcran();//Efface l'écran et affiche le titre du programme
 
-	printf("Que voulez-vous faire ?\n\n");
+	printf("Que voulez-vous faire ??\n\n");
 	printf("\t1. Charger une section\n");
 	printf("\t2. Creer une nouvelle section");
 	printf("\n\nVotre choix : ");
