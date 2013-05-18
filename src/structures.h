@@ -8,8 +8,7 @@
 
 #ifndef STRUCTURES_H_
 #define STRUCTURES_H_
-
-#define MAX_CHAR 51
+#include "defines.h"
 
 typedef struct
 {

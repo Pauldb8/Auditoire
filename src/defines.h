@@ -9,12 +9,13 @@
 #ifndef DEFINES_H_
 #define DEFINES_H_
 
-#define MAX_CHAR 51
+#define MAX_CHAR 100
 #define URL_SECTIONS "src/Sauvegardes/" //Où chercher les dossiers de Sections
 #define URL_CLASSES "src/Sauvegardes/Classes/"
 #define INCREMENTALLOC 3
 
 #define DEBUG 0
+#define MAX_COURS 5 //Nombre maximum de cours par année
 #define TAILLE_MAX MAX_CHAR
 #define INCREMENTALLOC 3
 #define URI_FICHIERS URL_SECTIONS
