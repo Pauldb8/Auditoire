@@ -14,12 +14,20 @@ int getNumber(int min, int max){
 	int number;
 	do{
 		scanf("%d", &number);
+
+		if(number < min || number > max)
+        {
+            printf("Nombre entre incorrect, veulliez recommencer : ");
+            scanf("%d", &number);
+        }
+
 	}while((number > max) || (number < min));
 	return number;
 }
 
+
 /*
- * @effacerEcran: Cette fonction efface l'écran et réaffiche le titre principal.
+ * @effacerEcran: Cette fonction efface l'ï¿½cran et rï¿½affiche le titre principal.
  * @param: aucun.
  * @return: aucun.
  */
@@ -29,10 +37,10 @@ void effacerEcran(){
 }
 
 /*
- * @nombreDeFichier(char*): Cette fonction compte le nombre de fichier présent dans
- * le dossier reçu en paramètre.
- * /!\ Elle retourne cette valeur diminuée de 2 /!\
- * Car les fichiers "." et ".." ne sont autre que des dossiers (le courant et le supérieur)
+ * @nombreDeFichier(char*): Cette fonction compte le nombre de fichier prï¿½sent dans
+ * le dossier reï¿½u en paramï¿½tre.
+ * /!\ Elle retourne cette valeur diminuï¿½e de 2 /!\
+ * Car les fichiers "." et ".." ne sont autre que des dossiers (le courant et le supï¿½rieur)
  * @return: elle retourne le nombre exact de fichier (sans "." et "..").
  */
 int nombreDeFichier(char* dossier)
@@ -45,9 +53,9 @@ int nombreDeFichier(char* dossier)
 	struct dirent * ent;
 
 	while ((ent = readdir(rep)) != NULL)//Parcours du dossier
-			nbrSection++;	//On incrément à chaque fichier trouvé.
+			nbrSection++;	//On incrï¿½ment ï¿½ chaque fichier trouvï¿½.
 
-	closedir(rep); //Fermeture du répertoire.
+	closedir(rep); //Fermeture du rï¿½pertoire.
 	}
 
     else //Impossible d'ouvrir le dossier : ERREUR.
@@ -58,8 +66,8 @@ int nombreDeFichier(char* dossier)
         exit(0);
 	}
 
-	/*On fait moins 2 pour passer les deux premières itérations car elles sont toujours*/
-    /*"." et ".." autrement dit, le dossier courant et le dossier supérieur.*/
+	/*On fait moins 2 pour passer les deux premiï¿½res itï¿½rations car elles sont toujours*/
+    /*"." et ".." autrement dit, le dossier courant et le dossier supï¿½rieur.*/
     return (nbrSection-2);
 
 }
