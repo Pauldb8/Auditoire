@@ -71,7 +71,7 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 		strcpy(returnClasseVide->nomClasse, nomClasse);
 		returnClasseVide->nbEtu = 0;
 
-		printf("La classe \"%s\" est vide, vous devrez la remplir.", nomClasse);
+		printf("La classe \"%s\" est vide, vous devrez la remplir.\n", nomClasse);
 		return *returnClasseVide;
 	}
 
@@ -85,7 +85,7 @@ T_Classe chargerClasse(char *url, char* nomClasse){
 		fread(returnClasse.eleves, returnClasse.nbEtu * sizeof(T_Etudiant), 1, fichier);
 
 		printf("Classe %s correctement chargee : ", returnClasse.nomClasse);
-		printf("il y a %d etudiants", returnClasse.nbEtu);
+		printf("il y a %d etudiants\n", returnClasse.nbEtu);
 		return returnClasse;
 	}
 }
@@ -129,7 +129,7 @@ void afficherClasse(T_Classe a)
 /**
  * Affiche un menu de choix des options possibles sur la classe.
  */
-void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee)
+void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee, T_Cours *tabCours, int nbCours)
 {
 	int choix;
 	char* url;
@@ -152,7 +152,6 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee)
 
 	/*Chargement de la classe*/
 	classe = chargerClasse(url, nomClasse);
-	effacerEcran();
 
     do
     {
@@ -172,10 +171,10 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee)
         switch(choix)
         {
             case 1:
-                ajouterEtudiant(&classe);
+                ajouterEtudiant(&classe, nbCours);
                 break;
             case 2 :
-                modifierEtudiant(&classe);
+                modifierEtudiant(&classe, tabCours, nbCours);
                 break;
             case 3 :
                 supprimerEtudiant(&classe);
@@ -338,29 +337,27 @@ void trierEtudiant(T_Classe * a)
     qsort(a->eleves, a->nbEtu, sizeof(T_Etudiant), fcomp);
 }
 
-void modifierEtudiant(T_Classe * a)
+void modifierEtudiant(T_Classe * a, T_Cours *tabCours, int nbCours)
 {
     char mat[MAX_CHAR];
+    int indiceEtu;
     int choix = 0;
 
     effacerEcran();
     printf("*** Modification d'un etudiant *** \n\n");
-    printf("Matricule de l'etudiant a modifier : ");
-    fflush(stdin);
-    gets(mat);
-    trierEtudiant(a);
+   do{
+		printf("Matricule de l'etudiant a modifier : ");
+		scanf("%s", mat);
+		trierEtudiant(a);
 
-    int indiceEtu = rechercherEtudiant(*a, mat);
-
-    if(indiceEtu == -1)
-    {
-        printf("Ce matricule n'existe pas.\n");
-        system("pause");
-        effacerEcran();
-        modifierEtudiant(a);
-    }
-
-    effacerEcran();
+		indiceEtu = rechercherEtudiant(*a, mat);
+		if(indiceEtu == -1)
+		{
+			printf("Ce matricule n'existe pas.\n");
+			system("pause");
+		}
+		effacerEcran();
+   }while(indiceEtu == -1);
 
     printf("Que voulez vous modifier ?\n");
     do
@@ -369,11 +366,10 @@ void modifierEtudiant(T_Classe * a)
         printf("\t2. L'adresse de l'etudiant\n");
         printf("\t3. Retour\n");
         printf("Votre choix : ");
-        fflush(stdin);
-        scanf("%d", &choix);
+        choix = getNumber(1, 3);
 
         if(choix == 1)
-            modifierCotes(&a->eleves[indiceEtu]);
+            modifierCotes(&a->eleves[indiceEtu], tabCours, nbCours);
         if(choix == 2)
             modifierAdresse(&a->eleves[indiceEtu]);
 
@@ -384,21 +380,19 @@ void modifierEtudiant(T_Classe * a)
 
 }
 
-void modifierCotes(T_Etudiant * etu)
+void modifierCotes(T_Etudiant * etu, T_Cours *tabCours, int nbCours)
 {
-    effacerEcran();
-    printf("Premiere cote de l'etudiant : ");
-    scanf("%lf", &(etu->tabCotes[0]) );
-    printf("Deuxieme cote de l'etudiant : ");
-    scanf("%lf", &(etu->tabCotes[1]) );
-    printf("Troisieme cote de l'etudiant : ");
-    scanf("%lf", &(etu->tabCotes[2]) );
-    printf("Quatrieme cote de l'etudiant : ");
-    scanf("%lf", &(etu->tabCotes[3]) );
-    printf("Cinquieme cote de l'etudiant : ");
-    scanf("%lf", &(etu->tabCotes[4]) );
-    etu->moyennePourcentage = calculerMoyenne(*etu);
-    etu->nbEchecs = calculerNombreEchecs(*etu);
+	int i = 0;
+
+	//Allocation du tableau de cotes:
+	etu->tabCotes = realloc(etu->tabCotes, sizeof(T_Cours) * nbCours);
+	effacerEcran();
+    for(i = 0; i < nbCours; i++){
+    	printf("Note en %s : ", tabCours[i].nomCours);
+    	scanf("%lf", &(etu->tabCotes[i]) );
+    }
+    etu->moyennePourcentage = calculerMoyenne(*etu, nbCours);
+    etu->nbEchecs = calculerNombreEchecs(*etu, nbCours);
     printf("Cotes correctement modifiees\n\n");
     system("pause");
 
@@ -441,7 +435,7 @@ int rechercherEtudiant(T_Classe a, char mat[])
 
 }
 
-void ajouterEtudiant(T_Classe * a)
+void ajouterEtudiant(T_Classe * a, int nbCours)
 {
     T_Etudiant etu;
     char recommencer = 0;
@@ -460,25 +454,26 @@ void ajouterEtudiant(T_Classe * a)
         printf("Prenom : ");
         fflush(stdin);
         gets(etu.prenom);
-        printf("Ville : ");
-        fflush(stdin);
-        gets(etu.ville);
-        printf("Rue : ");
-        fflush(stdin);
-        gets(etu.rue);
         printf("Numero de rue : ");
         fflush(stdin);
         scanf("%d", &etu.num);
+        printf("Rue : ");
+        fflush(stdin);
+        gets(etu.rue);
         printf("Code Postal (valide, donc entre 1000 et 9999) : ");
         fflush(stdin);
         scanf("%d", &etu.cp);
+        printf("Ville : ");
+        fflush(stdin);
+        gets(etu.ville);
 
-        /*Mise à zero des 5 cotes */
-        for (i = 0 ; i < 5 ; i++)
+        etu.tabCotes = (double*) malloc(sizeof(double) * nbCours);
+        /*Mise à zero des cotes */
+        for (i = 0 ; i < nbCours ; i++)
             etu.tabCotes[i] = 0;
 
-        etu.moyennePourcentage = calculerMoyenne(etu);
-        etu.nbEchecs = calculerNombreEchecs(etu);
+        etu.moyennePourcentage = calculerMoyenne(etu, nbCours);
+        etu.nbEchecs = calculerNombreEchecs(etu, nbCours);
 
         a->eleves = realloc(a->eleves,(a->nbEtu + INCREMENTALLOC) * sizeof(T_Etudiant));
 
@@ -496,15 +491,15 @@ void ajouterEtudiant(T_Classe * a)
 }
 
 /*Ne tiens (pas encore) compte de la pondération des cours.*/
-double calculerMoyenne(T_Etudiant etu)
+double calculerMoyenne(T_Etudiant etu, int nbCours)
 {
     int i;
     double restTemp = 0, moy, moyPourcent;
 
-    for(i = 0 ; i < 5 ; i++)
+    for(i = 0 ; i < nbCours ; i++)
         restTemp += etu.tabCotes[i];
 
-    moy = restTemp/5;
+    moy = restTemp/nbCours;
 
     moyPourcent = (moy * 100) / 20;
 
@@ -512,11 +507,11 @@ double calculerMoyenne(T_Etudiant etu)
 
 }
 
-int calculerNombreEchecs(T_Etudiant etu)
+int calculerNombreEchecs(T_Etudiant etu, int nbCours)
 {
     int i, nbr = 0;
 
-    for(i = 0 ; i < 5; i++)
+    for(i = 0 ; i < nbCours; i++)
     {
         if(etu.tabCotes[i] < 10)
             nbr++;

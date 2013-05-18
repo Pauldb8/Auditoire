@@ -15,7 +15,7 @@ typedef struct
     char matricule[MAX_CHAR];
     char nom[MAX_CHAR];
     char prenom[MAX_CHAR];
-    double tabCotes[5];
+    double *tabCotes;
     double moyennePourcentage;
     int nbEchecs;
     char rue[MAX_CHAR];

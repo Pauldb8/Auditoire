@@ -34,7 +34,7 @@ int getNumber(int min, int max){
  */
 void effacerEcran(){
 	system("CLS");
-	printf("*** Programme d'administration d'une ecole ***\n\n");
+	printf("*** Programme d'administration d'une ecole ***\n");
 }
 
 /*

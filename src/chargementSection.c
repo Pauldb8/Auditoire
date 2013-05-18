@@ -82,14 +82,10 @@ T_Section choisirSectionACharger(char * dossier)
 		closedir(rep); //Fermeture du répertoire
 
 		//On demande de choisir le dossier
-		printf("\n\t%d. Retour",j+1);
 
         /*-1 car on propose les choix 1, 2 et 3 au lieu de 0, 1 et 2, position réel dans le tableau*/
-		printf("\n\nVotre choix : ");
-		numChoisi = (getNumber(1,j+1) - 1);
-
-		if(numChoisi == j)
-            main();
+		printf("\nVotre choix : ");
+		numChoisi = (getNumber(1,j) - 1);
 
 		//Chargement des années du fichiers
 		anneesChargees = malloc(nbrSection * sizeof(T_Annee));
@@ -101,20 +97,20 @@ T_Section choisirSectionACharger(char * dossier)
 		//Création de la section correspondante
 		sectionChargee.nbrAnnees = nbrAnnees;
 		sectionChargee.tabAnnees = malloc(nbrAnnees * sizeof(T_Annee));
-        sectionChargee.tabAnnees = anneesChargees;
+		sectionChargee.tabAnnees = anneesChargees;
 
 
 		//On supprime l'extension (Informatique.txt => Informatique)
 		taille = strlen(sections[numChoisi]);
-	    sections[numChoisi][taille - 4] = '\0';
+		sections[numChoisi][taille - 4] = '\0';
 		strcpy(sectionChargee.nom, sections[numChoisi]);
 
 		//On retourne la section chargée.
+		if(DEBUG){
 		printf("\n\nSection %s correctement chargee !\n", sectionChargee.nom);
 		system("PAUSE");
-
+		}
 		return sectionChargee;
-
 	}
 
 	else //Impossible d'ouvrir le dossier : ERREUR.

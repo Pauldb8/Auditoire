@@ -23,31 +23,31 @@ int main(void) {
 	int choix;
 	T_Section sectionChargee;
 	setvbuf(stdout, NULL, _IONBF, 0); //Pour Eclipse
+	do{
+		effacerEcran();//Efface l'écran et affiche le titre du programme
 
-	effacerEcran();//Efface l'écran et affiche le titre du programme
+		printf("\nQue voulez-vous faire ??\n\n");
+		printf("\t1. Charger une section\n");
+		printf("\t2. Creer une nouvelle section\n");
+		printf("\n\t3. Quitter");
+		printf("\n\nVotre choix : ");
 
-	printf("Que voulez-vous faire ??\n\n");
-	printf("\t1. Charger une section\n");
-	printf("\t2. Creer une nouvelle section");
-	printf("\n\nVotre choix : ");
+		/*L'utilisateur doit faire un choix, 1 ou 2, mais pas d'autres choix possibles*/
+		choix = getNumber(1,3);
 
-	/*L'utilisateur doit faire un choix, 1 ou 2, mais pas d'autres choix possibles*/
-	choix = getNumber(1,2);
-
-	if(choix == 1)
-    {
-        sectionChargee = (T_Section) choisirSectionACharger(URL_SECTIONS);
-        effacerEcran();
-		administrationAnnees(&sectionChargee);
-    }
-
-
-    else if (choix == 2)
-        sectionChargee = (T_Section) creerSection(URL_SECTIONS);
+		if(choix == 1)
+		{
+			sectionChargee = (T_Section) choisirSectionACharger(URL_SECTIONS);
+			administrationAnnees(&sectionChargee);
+		}
 
 
-	//todo: add else
-	printf("Fin correcte du programme\n");
+		else if (choix == 2)
+			sectionChargee = (T_Section) creerSection(URL_SECTIONS);
 
+
+		//todo: add else
+		printf("Fin correcte du programme\n");
+	}while(choix != 3);
 	return EXIT_SUCCESS;
 }

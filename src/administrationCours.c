@@ -11,6 +11,7 @@
 #include "defines.h"
 #include "structures.h"
 #include "tools.h"
+#include "operationsEtudiants.h"
 
 /*
  * affichercours(T_Annee): Cette fonction affiche les cours et leurs pondérations d'une
@@ -92,10 +93,11 @@ void modifierCours(T_Annee* annee){
 /*
  * supprimerCours(T_Annee*): cette fonction affiche les cours d'une année et permet
  * d'en choisir un à supprimer, elle s'occupe des toutes les allocations dynamiques nécessaires.
+ * Elle supprime également le cours dans le tableau de notes des élèves de l'école.
  * @param: pointeur sur l'année à modifier.
  */
 void supprimerCours(T_Annee *annee){
-	int choix, i;
+	int choix, i, j, k;
 	effacerEcran();
 	if(annee->nbCoursParEtudiant > 0){
 		afficherCours(*annee);
@@ -107,8 +109,25 @@ void supprimerCours(T_Annee *annee){
 			for(i = choix-1; i < annee->nbCoursParEtudiant-1; i++){
 				annee->tabCours[i] = annee->tabCours[i+1];
 			}
+
+			//On réalloue les mémoires pour une place en moins
 			annee->nbCoursParEtudiant--;
 			annee->tabCours = (T_Cours *) realloc(annee->tabCours, sizeof(T_Cours) * annee->nbCoursParEtudiant);
+
+			//Maintenant supprimons ce cours du tableau de cotes de TOUS les élèves
+			for(i = 0; i < annee->nbClasses; i++){ //Pour chaque classe
+				for(j = 0; j < annee->tabClasse[i].nbEtu; j++)//Pour chaque élèves de la classe
+				{
+					//On descend les notes d'une case d'index, supprimant à partir de l'index que l'on veut supprimer
+					for(k = choix - 1; k < annee->nbCoursParEtudiant-1; k++)//Pour chacunes des notes des élèves
+						annee->tabClasse[i].eleves[j].tabCotes[k] = annee->tabClasse[i].eleves[j].tabCotes[k+1];
+					annee->tabClasse[i].eleves[j].tabCotes = realloc(annee->tabClasse[i].eleves[j].tabCotes, sizeof(double) * annee->nbCoursParEtudiant);
+					//Recalcul des moyennes et echecs de tous les élèves étant donné la supression d'un cours
+					annee->tabClasse[i].eleves[j].moyennePourcentage = calculerMoyenne(annee->tabClasse[i].eleves[j], annee->nbCoursParEtudiant);
+					annee->tabClasse[i].eleves[j].nbEchecs = calculerNombreEchecs(annee->tabClasse[i].eleves[j], annee->nbCoursParEtudiant);
+				}
+			}
+
 			printf("\nCours correctement supprime !\n");
 			system("PAUSE");
 		}

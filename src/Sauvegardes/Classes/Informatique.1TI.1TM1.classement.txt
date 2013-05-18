@@ -1,0 +1,5 @@
+Classement		Nom			Moyenne			Nombre d'echecs		
+
+1.		|	DE BUCK		|	84.0		|		0
+2.		|	NANSON		|	75.0		|		0
+3.		|	OBIANG		|	70.0		|		0
