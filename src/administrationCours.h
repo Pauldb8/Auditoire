@@ -12,5 +12,6 @@
 void afficherCours(T_Annee);
 void ajouterCours(T_Annee*);
 void modifierCours(T_Annee*);
+void supprimerCours(T_Annee*);
 
 #endif /* ADMINISTRATIONCOURS_H_ */

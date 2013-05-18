@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "defines.h"
 #include "structures.h"
 #include "tools.h"
 
@@ -34,22 +35,28 @@ void afficherCours(T_Annee annee){
 void ajouterCours(T_Annee* annee){
 	char nomCours[MAX_CHAR];
 	int ponderationCours, nbCours = annee->nbCoursParEtudiant;
-	T_Cours nouveauCours;
-	effacerEcran();
-	printf("***Ajout d'un cours a %s***\n\n", annee->nomAnneeSection);
-	printf("Entrez le nom du cours a ajouter : ");
-	scanf("%s", nomCours);
-	printf("Entrez sa ponderation : ");
-	scanf("%d", &ponderationCours);
-	strcpy(nouveauCours.nomCours, nomCours);
-	nouveauCours.ponderation = ponderationCours;
+	if(nbCours < MAX_COURS){
+		T_Cours nouveauCours;
+		effacerEcran();
+		printf("***Ajout d'un cours a %s***\n\n", annee->nomAnneeSection);
+		printf("Entrez le nom du cours a ajouter : ");
+		scanf("%s", nomCours);
+		printf("Entrez sa ponderation : ");
+		scanf("%d", &ponderationCours);
+		strcpy(nouveauCours.nomCours, nomCours);
+		nouveauCours.ponderation = ponderationCours;
 
-	//Allocation de la place nécessaire, 1 cours en plus
-	annee->tabCours = (T_Cours *) realloc(annee->tabCours, (nbCours+1) * sizeof(T_Cours));
-	annee->tabCours[nbCours] = nouveauCours;
-	annee->nbCoursParEtudiant++;
-	printf("\nLe cours %s (%d) a correctement ete ajoute !\n", annee->tabCours[nbCours].nomCours, annee->tabCours[nbCours].ponderation);
-	system("PAUSE");
+		//Allocation de la place nécessaire, 1 cours en plus
+		annee->tabCours = (T_Cours *) realloc(annee->tabCours, (nbCours+1) * sizeof(T_Cours));
+		annee->tabCours[nbCours] = nouveauCours;
+		annee->nbCoursParEtudiant++;
+		printf("\nLe cours %s (%d) a correctement ete ajoute !\n", annee->tabCours[nbCours].nomCours, annee->tabCours[nbCours].ponderation);
+		system("PAUSE");
+	}
+	else{
+		printf("Impossible : le nombre maximum de cours autorises est atteint (%d cours) !\n", MAX_COURS);
+
+	}
 }
 
 /*
@@ -60,16 +67,54 @@ void ajouterCours(T_Annee* annee){
 void modifierCours(T_Annee* annee){
 	int choix;
 	char nomCours[MAX_CHAR];
-
 	effacerEcran();
-	afficherCours(*annee);
-	printf("\nQuel cours souhaitez-vous modifier : ");
-	choix = getNumber(1, annee->nbCoursParEtudiant);
-	printf("Tapez le nouveau nom pour %s : ", annee->tabCours[choix-1].nomCours);
-	scanf("%s", nomCours);
-	strcpy(annee->tabCours[choix-1].nomCours, nomCours);
-	printf("Tapez la nouvelle pondération (anciennement %d) : ", annee->tabCours[choix-1].ponderation);
-	annee->tabCours[choix-1].ponderation = getNumber(1, 60); //Pas plus que 60 crédit pour un cours !
-	printf("Le cours \"%s (%d)\" a ete correctement modifie.\n", annee->tabCours[choix-1].nomCours, annee->tabCours[choix-1].ponderation);
-	system("PAUSE");
+	if(annee->nbCoursParEtudiant > 0){
+		afficherCours(*annee);
+		printf("\t%d. Retour\n", annee->nbCoursParEtudiant+1);
+		printf("\nQuel cours souhaitez-vous modifier : ");
+		choix = getNumber(1, annee->nbCoursParEtudiant+1);
+		if(choix != annee->nbCoursParEtudiant+1){
+			printf("Tapez le nouveau nom pour %s : ", annee->tabCours[choix-1].nomCours);
+			scanf("%s", nomCours);
+			strcpy(annee->tabCours[choix-1].nomCours, nomCours);
+			printf("Tapez la nouvelle pondération (anciennement %d) : ", annee->tabCours[choix-1].ponderation);
+			annee->tabCours[choix-1].ponderation = getNumber(1, 60); //Pas plus que 60 crédit pour un cours !
+			printf("Le cours \"%s (%d)\" a ete correctement modifie.\n", annee->tabCours[choix-1].nomCours, annee->tabCours[choix-1].ponderation);
+			system("PAUSE");
+		}
+	}
+	else {
+			printf("Il n'y a aucun cours a modifier !\n");
+			system("PAUSE");
+		}
+}
+
+/*
+ * supprimerCours(T_Annee*): cette fonction affiche les cours d'une année et permet
+ * d'en choisir un à supprimer, elle s'occupe des toutes les allocations dynamiques nécessaires.
+ * @param: pointeur sur l'année à modifier.
+ */
+void supprimerCours(T_Annee *annee){
+	int choix, i;
+	effacerEcran();
+	if(annee->nbCoursParEtudiant > 0){
+		afficherCours(*annee);
+		printf("\t%d. Retour\n", annee->nbCoursParEtudiant+1);
+		printf("\nQuel cours souhaitez-vous supprimer : ");
+		choix = getNumber(1, annee->nbCoursParEtudiant+1);
+
+		if(choix != annee->nbCoursParEtudiant+1){
+			for(i = choix-1; i < annee->nbCoursParEtudiant-1; i++){
+				annee->tabCours[i] = annee->tabCours[i+1];
+			}
+			annee->nbCoursParEtudiant--;
+			annee->tabCours = (T_Cours *) realloc(annee->tabCours, sizeof(T_Cours) * annee->nbCoursParEtudiant);
+			printf("\nCours correctement supprime !\n");
+			system("PAUSE");
+		}
+	}
+	else {
+		printf("Il n'y a aucun cours a supprimer !\n");
+		system("PAUSE");
+	}
 }
