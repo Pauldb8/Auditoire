@@ -105,7 +105,6 @@ void afficherMenuChoixAnnee(T_Section * tab)
 		printf("\nVotre choix : ");
 	   choix = getNumber(1, i+1);
 	   if(choix != i+1)
-		/*tab[choix - 1] car on propose 1 et 2 à la place de 0 et 1, étant les positions réelles dans le tableau*/
 		afficherMenuChoixClasse(*tab, choix-1);
     }while(choix != i+1);
 }

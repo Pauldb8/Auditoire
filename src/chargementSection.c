@@ -34,6 +34,7 @@ T_Section choisirSectionACharger(char * dossier)
 	DIR * rep = opendir(dossier);
 	int i = 0, j = 0, nbrSection, numChoisi, nbrAnnees, taille;
 	char** sections; //Matrice 2D, première dimension le nombre de section et 2eme leurs noms.
+	char *nomSection;
 	T_Section sectionChargee;
 	T_Annee * anneesChargees;
 
@@ -63,7 +64,9 @@ T_Section choisirSectionACharger(char * dossier)
 			/*Et i != 2 car on ne veut pas lire le premier dossier qui est Classe */
             if((i != 0) && (i != 1) && (i != 2))
             {
-				printf("\t%d. %s\n", j+1, ent->d_name);//On affiche les noms de fichiers
+            	nomSection = ent->d_name;
+            	nomSection[strlen(nomSection)-4] = '\0';
+				printf("\t%d. %s\n", j+1, nomSection);//On affiche les noms de fichiers
 
 				sections[j] = (char*)malloc(sizeof(char) * MAX_CHAR);
 				if(sections[j] == NULL)
