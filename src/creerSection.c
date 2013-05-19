@@ -16,16 +16,22 @@ T_Section creerSection(char * URL)
 {
     T_Section aRenvoyer;
     int i, j, k;
+    char *abbr;
 
     effacerEcran();
     printf("*** Creation d'une nouvelle section *** \n\n");
 
     printf("Nom de la section : ");
-    fflush(stdin);
-    gets(aRenvoyer.nom);
-    printf("\n");
+    scanf("%s", aRenvoyer.nom)
+    printf("Abbreviation de la section (TI, HE...) : ");
+    do{
+    	scanf("%s", abbr);
+    	if(strelen(abbr) > 2)
+    		printf("Doit faire maximum 2 caractères : ");
+    }while(strlen(abbr) > 2);
+    aRenvoyer.abbreviation = abbr;
+
     printf("Nombre d'annee de la section : ");
-    fflush(stdin);
     scanf("%d", &aRenvoyer.nbrAnnees);
 
     aRenvoyer.tabAnnees = malloc(aRenvoyer.nbrAnnees * sizeof(T_Annee));
@@ -34,10 +40,8 @@ T_Section creerSection(char * URL)
     {
         printf("\n");
         printf("\t.Nom de l'annee %d (ex : 1TI) : ", i+1);
-        fflush(stdin);
-        gets(aRenvoyer.tabAnnees[i].nomAnneeSection);
+        scanf("%s", aRenvoyer.tabAnnees[i].nomAnneeSection);
         printf("\t\tNombre de classes de cette annees (%s) : ", aRenvoyer.tabAnnees[i].nomAnneeSection);
-        fflush(stdin);
         scanf("%d", &aRenvoyer.tabAnnees[i].nbClasses);
 
         aRenvoyer.tabAnnees[i].tabClasse = malloc(aRenvoyer.tabAnnees[i].nbClasses * sizeof(T_Classe));
@@ -47,8 +51,7 @@ T_Section creerSection(char * URL)
         {
             aRenvoyer.tabAnnees[i].nomClasse[j] = (char *)malloc(MAX_CHAR * sizeof(char));
             printf("\t\t\t-Nom de la classe %d : ", i+1);
-            fflush(stdin);
-            gets(aRenvoyer.tabAnnees[i].nomClasse[j]);
+            scanf("%s", aRenvoyer.tabAnnees[i].nomClasse[j]);
         }
 
         printf("\n");
@@ -60,10 +63,8 @@ T_Section creerSection(char * URL)
         for(k = 0 ; k < aRenvoyer.tabAnnees[i].nbCoursParEtudiant ; k++)
         {
             printf("\t\t\t Nom du cours %d : ", i+1);
-            fflush(stdin);
-            gets(aRenvoyer.tabAnnees[i].tabCours[k].nomCours);
+            scanf("%s", aRenvoyer.tabAnnees[i].tabCours[k].nomCours);
             printf("\t\t\t Ponderation de ce cours : ");
-            fflush(stdin);
             scanf("%d", &aRenvoyer.tabAnnees[i].tabCours[k].ponderation);
         }
 
