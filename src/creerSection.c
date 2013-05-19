@@ -16,7 +16,6 @@ T_Section creerSection(char * URL)
 {
     T_Section aRenvoyer;
     int i, j, k;
-    char * url;
 
     effacerEcran();
     printf("*** Creation d'une nouvelle section *** \n\n");
