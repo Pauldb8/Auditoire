@@ -72,8 +72,20 @@ T_Section creerSection(char * URL)
     }
 
     sauverFichierParametrage(aRenvoyer);
-    printf("La section est correctement creer, et correctement enregistree ! \n\n");
+    printf("\nLa section est correctement creer, et correctement enregistree ! \n\n");
     system("Pause");
     return aRenvoyer;
+
+    free(aRenvoyer.tabAnnees);
+
+    for(i = 0 ; i < aRenvoyer.nbrAnnees ; i++)
+    {
+        free(aRenvoyer.tabAnnees[i].tabClasse);
+        free(aRenvoyer.tabAnnees[i].nomClasse);
+        free(aRenvoyer.tabAnnees[i].tabCours);
+
+        for(k = 0 ; k < aRenvoyer.tabAnnees[i].nbClasses ; k++)
+            free(aRenvoyer.tabAnnees[i].nomClasse[k]);
+    }
 }
 
