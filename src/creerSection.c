@@ -4,32 +4,35 @@
  *  Created on: 13 mai 2013
  *      Author: Paul
  */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "structures.h"
 #include "tools.h"
 #include "sauvegardeFichier.h"
 #include "defines.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "fichierParametrage.h"
 
 T_Section creerSection(char * URL)
 {
     T_Section aRenvoyer;
     int i, j, k;
-    char *abbr;
+    char abbr[2];
+    char abbrAnnee[2];
 
     effacerEcran();
     printf("*** Creation d'une nouvelle section *** \n\n");
 
     printf("Nom de la section : ");
-    scanf("%s", aRenvoyer.nom)
+    scanf("%s", aRenvoyer.nom);
     printf("Abbreviation de la section (TI, HE...) : ");
     do{
     	scanf("%s", abbr);
-    	if(strelen(abbr) > 2)
+    	if(strlen(abbr) > 2)
     		printf("Doit faire maximum 2 caractères : ");
     }while(strlen(abbr) > 2);
-    aRenvoyer.abbreviation = abbr;
+    strcpy(aRenvoyer.abbreviation, abbr);
 
     printf("Nombre d'annee de la section : ");
     scanf("%d", &aRenvoyer.nbrAnnees);
@@ -38,37 +41,7 @@ T_Section creerSection(char * URL)
 
     for(i = 0 ; i < aRenvoyer.nbrAnnees ; i++)
     {
-        printf("\n");
-        printf("\t.Nom de l'annee %d (ex : 1TI) : ", i+1);
-        scanf("%s", aRenvoyer.tabAnnees[i].nomAnneeSection);
-        printf("\t\tNombre de classes de cette annees (%s) : ", aRenvoyer.tabAnnees[i].nomAnneeSection);
-        scanf("%d", &aRenvoyer.tabAnnees[i].nbClasses);
-
-        aRenvoyer.tabAnnees[i].tabClasse = malloc(aRenvoyer.tabAnnees[i].nbClasses * sizeof(T_Classe));
-        aRenvoyer.tabAnnees[i].nomClasse = (char **) malloc(aRenvoyer.tabAnnees[i].nbClasses * sizeof(char*));
-
-        for(j = 0 ; j < aRenvoyer.tabAnnees[i].nbClasses ; j++)
-        {
-            aRenvoyer.tabAnnees[i].nomClasse[j] = (char *)malloc(MAX_CHAR * sizeof(char));
-            printf("\t\t\t-Nom de la classe %d : ", i+1);
-            scanf("%s", aRenvoyer.tabAnnees[i].nomClasse[j]);
-        }
-
-        printf("\n");
-        printf("\t\tNombre de cours par etudiant : ");
-        scanf("%d", &aRenvoyer.tabAnnees[i].nbCoursParEtudiant);
-
-        aRenvoyer.tabAnnees[i].tabCours = malloc(aRenvoyer.tabAnnees[i].nbCoursParEtudiant * sizeof(T_Cours));
-
-        for(k = 0 ; k < aRenvoyer.tabAnnees[i].nbCoursParEtudiant ; k++)
-        {
-            printf("\t\t\t Nom du cours %d : ", i+1);
-            scanf("%s", aRenvoyer.tabAnnees[i].tabCours[k].nomCours);
-            printf("\t\t\t Ponderation de ce cours : ");
-            scanf("%d", &aRenvoyer.tabAnnees[i].tabCours[k].ponderation);
-        }
-
-
+    	aRenvoyer.tabAnnees[i] = demanderInfo(aRenvoyer.tabAnnees[i], aRenvoyer.abbreviation);
     }
 
     sauverFichierParametrage(aRenvoyer);

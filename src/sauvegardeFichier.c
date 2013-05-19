@@ -48,8 +48,10 @@ void sauverFichierParametrage(T_Section section)
 
     for(i = 0 ; i < nbr ; i++)
     {
-        fprintf(f, "%s;", tab[i].nomAnneeSection);
-        fprintf(f, "%d;", tab[i].nbClasses);
+        fprintf(f, "%s;", tab[i].nomAnneeSection);//Nom annee
+        fprintf(f, "%s;", tab[i].abbreviation);//Abbreviation
+        fprintf(f, "%d;", tab[i].compteurMatricule);//Nom annee
+        fprintf(f, "%d;", tab[i].nbClasses);//Nombre de classe dans l'année
 
         if(DEBUG)
         {
@@ -82,21 +84,20 @@ void sauverFichierParametrage(T_Section section)
     fclose(f);
 }
 
-/*Permet de charger TOUT le fichier de parametrage*/
-/*tab contiendra les informations relatives à toutes les années/sections*/
 
 /*
- * @chargerFichierParametrage(char*, T_Annee*): Cette fonction lit un fichier de section
- * et remplit la structure T_Annee, reçue en paramètre, selon les informations
- * du fichier. Le fichier à lire est reçu en paramètre, et est considéré comme
+ * @chargerFichierParametrage(char*): Cette fonction lit un fichier de section
+ * et retourne une structure T_Section chargée selon les informations
+ * du fichier. Le nom du fichier à lire est reçu en paramètre, et est considéré comme
  * étant VALIDE.
  * @param: L'adressse du fichier à charger.
- * @param: un pointeur vers une strucutre T_Annee à remplir avec les infos du fichier.
- * @return: Elle retourne le nombre d'année de la section que contenait le fichier.
+ * @return: Elle retourne la structure crée à partir du fichier.
  */
-int chargerFichierParametrage(char* fichier, T_Annee * tab)
+T_Section chargerFichierParametrage(char* fichier)
 {
     int j = 0, k, l, m;
+    T_Section sectionChargee;
+    T_Annee *tab;
 
     FILE *f = NULL;
     char s[TAILLE_MAX];
@@ -119,10 +120,15 @@ int chargerFichierParametrage(char* fichier, T_Annee * tab)
     /*On récupère le nombre d'annee/Section*/
     fgets(s, TAILLE_MAX, f);
     int nbrAnneeSection = atoi(s);
+    sectionChargee.nbrAnnees = nbrAnneeSection;
+    sectionChargee.tabAnnees = (T_Annee*) malloc(sizeof(T_Annee) * nbrAnneeSection);
+    tab = (T_Annee*) malloc(sizeof(T_Annee) * nbrAnneeSection);
 
-    while(fgets(s, TAILLE_MAX, f) != NULL) // Tant que l'on parvient à écrire dans le fichier
+    while(fgets(s, TAILLE_MAX, f) != NULL) // Tant que l'on parvient à lire dans le fichier
    {
       strcpy(tab[j].nomAnneeSection, strtok(s,";")); if(DEBUG) printf("Nom Annee/section : %s\n", tab[j].nomAnneeSection);
+      strcpy(tab[j].abbreviation, strtok(NULL,";")); if(DEBUG) printf("Abbreviation : %s\n", tab[j].abbreviation);
+      tab[j].compteurMatricule = atoi(strtok(NULL,";")); if(DEBUG) printf("Compteur matricule : %d\n", tab[j].compteurMatricule);
       tab[j].nbClasses = atoi(strtok(NULL, ";")); if(DEBUG) printf("Nombre de classes : %d\n", tab[j].nbClasses);
 
       tab[j].nomClasse = (char **) malloc(tab[j].nbClasses * sizeof(char*));
@@ -168,6 +174,7 @@ int chargerFichierParametrage(char* fichier, T_Annee * tab)
 
       j++;
    }
-    return nbrAnneeSection;
+    sectionChargee.tabAnnees = tab;
+    return sectionChargee;
 }
 

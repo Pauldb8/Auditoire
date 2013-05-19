@@ -1,4 +1,4 @@
 3;
-1TI;2;1TM1;1TM2;2;Maths;8;Anglais;6;
-2T2;2;2TM1;2TM2;3;Math;4;LP;8;Pheno;5;
-3TI;2;3TM1;3TM2;3;Math;4;LP;8;Pheno;5;
+1TI;TI10;3;2;1TM1;1TM2;2;Maths;8;Anglais;6;
+2T2;TI20;4;2;2TM1;2TM2;3;Math;4;LP;8;Pheno;5;
+3TI;TI30;5;2;3TM1;3TM2;3;Math;4;LP;8;Pheno;5;

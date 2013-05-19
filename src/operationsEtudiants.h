@@ -8,8 +8,8 @@
 #ifndef OPERATIONSETUDIANTS_H_
 #define OPERATIONSETUDIANTS_H_
 
-void administrationClasse(char*, char*, char*, T_Cours*, int);
-void ajouterEtudiant(T_Classe *, int);
+void administrationClasse(T_Section*, int, int);
+void ajouterEtudiant(T_Classe *, char*, int*, int);
 void sauvegarderClasse(T_Classe, char*, char*);
 T_Classe chargerClasse(char*, char*);
 void afficherClasse(T_Classe);

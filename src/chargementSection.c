@@ -32,11 +32,10 @@ extern int errno ;
 T_Section choisirSectionACharger(char * dossier)
 {
 	DIR * rep = opendir(dossier);
-	int i = 0, j = 0, nbrSection, numChoisi, nbrAnnees, taille;
+	int i = 0, j = 0, nbrSection, numChoisi, taille;
 	char** sections; //Matrice 2D, première dimension le nombre de section et 2eme leurs noms.
-	char *nomSection;
+	char nomSection[MAX_CHAR], *nomFichier;
 	T_Section sectionChargee;
-	T_Annee * anneesChargees;
 
 	effacerEcran();
 
@@ -64,8 +63,9 @@ T_Section choisirSectionACharger(char * dossier)
 			/*Et i != 2 car on ne veut pas lire le premier dossier qui est Classe */
             if((i != 0) && (i != 1) && (i != 2))
             {
-            	nomSection = ent->d_name;
-            	nomSection[strlen(nomSection)-4] = '\0';
+            	nomFichier = ent->d_name;
+            	strcpy(nomSection, nomFichier);
+            	nomSection[strlen(nomFichier)-4] = '\0';//On supprime l'extension du fichier pour en faire le nom de la section
 				printf("\t%d. %s\n", j+1, nomSection);//On affiche les noms de fichiers
 
 				sections[j] = (char*)malloc(sizeof(char) * MAX_CHAR);
@@ -76,7 +76,7 @@ T_Section choisirSectionACharger(char * dossier)
                     exit(0);
                 }
 
-				strcpy(sections[j], ent->d_name);
+				strcpy(sections[j], nomFichier);
 				j++;
 			}
             i++;
@@ -90,18 +90,8 @@ T_Section choisirSectionACharger(char * dossier)
 		printf("\nVotre choix : ");
 		numChoisi = (getNumber(1,j) - 1);
 
-		//Chargement des années du fichiers
-		anneesChargees = malloc(nbrSection * sizeof(T_Annee));
-		nbrAnnees = chargerFichierParametrage(sections[numChoisi], anneesChargees);
-
-		if(DEBUG)
-			printf("\n\tnbrAnnees = %d", nbrAnnees);
-
-		//Création de la section correspondante
-		sectionChargee.nbrAnnees = nbrAnnees;
-		sectionChargee.tabAnnees = malloc(nbrAnnees * sizeof(T_Annee));
-		sectionChargee.tabAnnees = anneesChargees;
-
+		//On charge la section selon le nom de fichier
+		sectionChargee = chargerFichierParametrage(sections[numChoisi]);
 
 		//On supprime l'extension (Informatique.txt => Informatique)
 		taille = strlen(sections[numChoisi]);

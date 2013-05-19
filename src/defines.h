@@ -14,7 +14,7 @@
 #define URL_CLASSES "src/Sauvegardes/Classes/"
 #define INCREMENTALLOC 3
 
-#define DEBUG 0
+#define DEBUG 1
 #define MAX_COURS 5 //Nombre maximum de cours par année
 #define TAILLE_MAX MAX_CHAR
 #define INCREMENTALLOC 3

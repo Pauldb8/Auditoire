@@ -10,7 +10,7 @@
 #include "structures.h"
 
 void sauverFichierParametrage(T_Section);
-int chargerFichierParametrage(char*, T_Annee*);
+T_Section chargerFichierParametrage(char*);
 
 #endif /* SAUVEGARDEFICHIER_H_ */
 

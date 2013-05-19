@@ -128,9 +128,15 @@ void afficherClasse(T_Classe a)
 /**
  * Affiche un menu de choix des options possibles sur la classe.
  */
-void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee, T_Cours *tabCours, int nbCours)
+void administrationClasse(T_Section *sct, int choix, int choixAnnee)
 {
-	int choix;
+	char* nomClasse = sct->tabAnnees[choix].tabClasse[choixAnnee].nomClasse;
+	char* nomSection = sct->nom;
+	char* nomAnnee = sct->tabAnnees[choix].nomAnneeSection;
+	T_Cours *tabCours = sct->tabAnnees[choix].tabCours;
+	int nbCours = sct->tabAnnees[choix].nbCoursParEtudiant;
+	char *abbr = sct->tabAnnees[choix].abbreviation;
+	int compteur = sct->tabAnnees[choix].compteurMatricule;
 	char* url;
 	T_Classe classe;
 	strcpy(classe.nomClasse, nomClasse);
@@ -170,7 +176,7 @@ void administrationClasse(char* nomClasse, char* nomSection, char* nomAnnee, T_C
         switch(choix)
         {
             case 1:
-                ajouterEtudiant(&classe, nbCours);
+                ajouterEtudiant(&classe, abbr, &compteur, nbCours);
                 break;
             case 2 :
                 modifierEtudiant(&classe, tabCours, nbCours);
@@ -439,7 +445,7 @@ int rechercherEtudiant(T_Classe a, char mat[])
 
 }
 
-void ajouterEtudiant(T_Classe * a, int nbCours)
+void ajouterEtudiant(T_Classe * a, char *abbr, int *nbMatricule, int nbCours)
 {
     T_Etudiant etu;
     char recommencer = 0;
@@ -449,9 +455,12 @@ void ajouterEtudiant(T_Classe * a, int nbCours)
     printf("*** Menu d'ajout d'un etudiant dans la classe %s ***\n\n", a->nomClasse);
 
     do{
+
         printf("Matricule : ");
-        fflush(stdin);
-        gets(etu.matricule);
+        sprintf(etu.matricule, "%s%04d", abbr, *nbMatricule);
+        printf("%s\n", etu.matricule);
+        //printf("TI100001\n");
+        //sprintf(etu.matricule, "TI100001");
         printf("Nom : ");
         fflush(stdin);
         gets(etu.nom);
@@ -459,13 +468,11 @@ void ajouterEtudiant(T_Classe * a, int nbCours)
         fflush(stdin);
         gets(etu.prenom);
         printf("Numero de rue : ");
-        fflush(stdin);
         scanf("%d", &etu.num);
         printf("Rue : ");
         fflush(stdin);
         gets(etu.rue);
         printf("Code Postal (valide, donc entre 1000 et 9999) : ");
-        fflush(stdin);
         scanf("%d", &etu.cp);
         printf("Ville : ");
         fflush(stdin);
@@ -478,6 +485,7 @@ void ajouterEtudiant(T_Classe * a, int nbCours)
 
         etu.moyennePourcentage = calculerMoyenne(etu, nbCours);
         etu.nbEchecs = calculerNombreEchecs(etu, nbCours);
+        *nbMatricule = *nbMatricule + 1;
 
         a->eleves = realloc(a->eleves,(a->nbEtu + INCREMENTALLOC) * sizeof(T_Etudiant));
 

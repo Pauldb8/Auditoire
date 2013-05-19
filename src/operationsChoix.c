@@ -87,7 +87,7 @@ void afficherMenuChoixClasse(T_Section sct, int choix)
 		if(choixAnnee == (i+1))
 			administrerCours(&sct, choix);
 		else if(choixAnnee != i+2)
-			administrationClasse(sct.tabAnnees[choix].tabClasse[choixAnnee-1].nomClasse, sct.nom, sct.tabAnnees[choix].nomAnneeSection, sct.tabAnnees[choix].tabCours, sct.tabAnnees[choix].nbCoursParEtudiant);
+			administrationClasse(&sct, choix, choixAnnee-1);
     }while(choixAnnee != i+2);
    }
 
@@ -142,7 +142,7 @@ void administrationAnnees(T_Section * tab)
 			   printf("nbrAnneeACreer: %d\n", nbrAnneeACreer);
 
 				for(i = 0 ; i < nbrAnneeACreer ; i++)
-					tab->tabAnnees[tab->nbrAnnees + i] = demanderInfo(tab->tabAnnees[tab->nbrAnnees + i]);
+					tab->tabAnnees[tab->nbrAnnees + i] = demanderInfo(tab->tabAnnees[tab->nbrAnnees + i], tab->abbreviation);
 
 				printf("Les nouvelles classes ont correctement ete ajoutee !\n");
 				//On incrémente le nombre de classes de la section
@@ -165,7 +165,7 @@ void administrationAnnees(T_Section * tab)
 				}
 
 				for(i = 0 ; i < nbrAnneeACreer ; i++)
-					tab->tabAnnees[i] = demanderInfo(tab->tabAnnees[i]);
+					tab->tabAnnees[i] = demanderInfo(tab->tabAnnees[i], tab->abbreviation);
 
 				printf("Voulez vous sauvegader ce fichier de parametrage ? : ");
 				fflush(stdin);

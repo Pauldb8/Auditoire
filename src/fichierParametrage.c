@@ -1,20 +1,20 @@
 #include "structures.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*Permet de créer 1 anneeSection */
-T_Annee demanderInfo(T_Annee anneeSection)
+T_Annee demanderInfo(T_Annee anneeSection, char *abbr)
 {
     system("cls");
-    printf("**** Creation d'annee/section **** \n\n");
+    printf("**** Creation d'annee **** \n\n");
+    char abbrAnnee[2];
 
     int i = 0;
 
         printf("Nom (ex : 1TI) : ");
-        fflush(stdin);
-        gets(anneeSection.nomAnneeSection);
+        scanf("%s", anneeSection.nomAnneeSection);
         printf("Nombre de Classes : ");
-        fflush(stdin);
         scanf("%d", &anneeSection.nbClasses);
 
         anneeSection.tabClasse = (T_Classe *)malloc(anneeSection.nbClasses * sizeof(T_Classe));
@@ -31,8 +31,14 @@ T_Annee demanderInfo(T_Annee anneeSection)
             if(anneeSection.nomClasse[i] == NULL)
                 exit(0);
             printf("\t Nom de la classe %d (ex : 1TM1) : ", i+1);
-            fflush(stdin);
-            gets(anneeSection.nomClasse[i]);
+            scanf("%s", anneeSection.nomClasse[i]);
+        //On demande le format de matricule
+            printf("\t\t\t-Abbreviation pour les matricules de la classe (ex: %s10): ", abbr);
+		   do{
+				printf("%s", abbr);//HE
+				scanf("%s", abbrAnnee);//10
+		   }while(strlen(abbrAnnee) > 2);
+		   sprintf(anneeSection.abbreviation, "%s%s", abbr, abbrAnnee);//Création du type de matricule HE10XXXX par ex.
         }
 
         printf("\n");
@@ -47,10 +53,8 @@ T_Annee demanderInfo(T_Annee anneeSection)
         for(i = 0 ; i < anneeSection.nbCoursParEtudiant ; i++)
         {
             printf("\t Nom du cours %d : ", i+1);
-            fflush(stdin);
-            gets(anneeSection.tabCours[i].nomCours);
+            scanf("%s", anneeSection.tabCours[i].nomCours);
             printf("\t Ponderation de ce cours : ");
-            fflush(stdin);
             scanf("%d", &anneeSection.tabCours[i].ponderation);
         }
 

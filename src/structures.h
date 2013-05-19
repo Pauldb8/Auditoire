@@ -32,7 +32,6 @@ typedef struct{
 typedef struct{
     char nomClasse[MAX_CHAR];
     int nbEtu;
-    int compteurMatricule;
     T_Etudiant * eleves;
 }T_Classe;
 
@@ -42,15 +41,17 @@ typedef struct{
     int nbClasses;
     char **nomClasse; // Tableau contenant le nom des classes. (1TM1)
     int nbCoursParEtudiant;
+    char abbreviation[4]; //TI10XXXX
+    int compteurMatricule;
     T_Cours *tabCours;
-    T_Classe *tabClasse; // Tableau de classe, exemple : 1TM1 (on ne sauvegardes pas ce champ)
+    T_Classe *tabClasse; // Tableau de classe, exemple : 1TM1 (on ne sauvegardes pas ce champs dans le .txt mais dans le .bin)
 }T_Annee;
 
 
-//Structure qui contiendra les diffÃ©rents annÃ©es section possibles
+//Structure qui contiendra les différentes années de la section
 typedef struct{
 	char nom[MAX_CHAR];
-	char abbreviation[2];
+	char abbreviation[2];//TIXXXXXX
 	int nbrAnnees;
 	T_Annee *tabAnnees;
 }T_Section;
